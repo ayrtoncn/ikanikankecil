@@ -19,19 +19,20 @@ public:
     
 
     // METHODS
-    friend void AddFishFromFish(const Fish& _fish);
-    friend void AddCoinFromCoins(const Coin &coin);
-    friend void AddFoodfromFoods(const Food &food);
+    friend void AddFishFromFish(Aquarium &Aq, const Fish& _fish);
+    friend void AddCoinFromCoins(Aquarium &Aq, const Coin &coin);
+    friend void AddFoodfromFoods(Aquarium &Aq, const Food &food);
 
-    friend void DeleteFishFromFish(const Fish &_fish);
-    friend void DeleteCoinFromCoins(const Coin &coin);
-    friend void DeleteFoodfromFoods(const Food &food);
+    friend void DeleteFishFromFish(Aquarium &Aq, const Fish &_fish);
+    friend void DeleteCoinFromCoins(Aquarium &Aq, const Coin &coin);
+    friend void DeleteFoodfromFoods(Aquarium &Aq, const Food &food);
 
     void MoveAll();
 
   private:
     int width;
     int height;
+    pthread_mutex_t lock1;
     LinkedList<Fish*> fish;
     LinkedList<Coin> coins;
     LinkedList<Food> foods;

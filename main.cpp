@@ -16,6 +16,7 @@ struct thread_data{
     double cx=100;
     double cy=100;
     int orientation =1;
+    int jenis;
 };
 
 struct thread_data td[100];
@@ -31,7 +32,6 @@ void *PrintHello(void *threadid){
 }
 void *gerak(void *threadarg){
     //init();
-    
     struct thread_data *my_data;
     my_data = (struct thread_data *)threadarg;
     // Menghitung FPS
@@ -51,6 +51,7 @@ void *gerak(void *threadarg){
     time(&start);
     double delay= rand()%4+1;
     int arah = rand()%8+1;
+    int jenis = rand()%2+1;
     int orientation;
     while (running) {
         pthread_mutex_lock(&lock1);
@@ -171,6 +172,8 @@ void *gerak(void *threadarg){
                 }
                 break;
             // x untuk keluar
+            case SDLK_x:
+                close();
             }
         }
 
@@ -198,6 +201,7 @@ void *gerak(void *threadarg){
         my_data->cx = cx;
         my_data->cy = cy;
         my_data->orientation = orientation;
+        my_data->jenis = jenis;
         // Gambar ikan di posisi yang tepat.
         // clear_screen();
         // // draw_text("Panah untuk bergerak, r untuk reset, x untuk keluar", 18, 10, 10, 0, 0, 0);
@@ -267,11 +271,21 @@ int main( int argc, char* args[] )
         // // draw_text("Panah untuk bergerak, r untuk reset, x untuk keluar", 18, 10, 10, 0, 0, 0);
         // // draw_text(fps_text, 18, 10, 30, 0, 0, 0);
         // if(orientation ==1){
+        draw_image("bg1.jpg", SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
         for(i=0;i<j;i++){
-            if(td[i].orientation ==1){
-                draw_image("ikankiri.png", td[i].cx, td[i].cy);
+            if(td[i].jenis==1){
+                if(td[i].orientation ==1){
+                    draw_image("ikankiri.png", td[i].cx, td[i].cy);
+                }else{
+                    draw_image("ikankanan.png", td[i].cx, td[i].cy);
+                }
             }else{
-                draw_image("ikankanan.png", td[i].cx, td[i].cy);
+                if(td[i].orientation==1){
+                    draw_image("piranhakiri.png", td[i].cx, td[i].cy);
+                }else{
+                    draw_image("piranhakanan.png", td[i].cx, td[i].cy);
+                }
+                
             }
             
         }

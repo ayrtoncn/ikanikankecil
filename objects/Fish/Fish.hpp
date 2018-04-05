@@ -18,7 +18,7 @@ using namespace std;
 class Fish {
 public:
     // CTOR CCTOR DTOR OPERATOR=
-    Fish();
+    Fish(string _name, int _full_period, int _hunger_period, int _coin_period, int _movement_speed, Point _position, char orientation);
     Fish(const Fish& fish);
     ~Fish();
     Fish& operator=(const Fish& fish);
@@ -34,7 +34,7 @@ public:
     Point getPosition() const;
     char getOrientation() const;
 
-    static void setFishCount();
+    static void setFishCount(int _fish_count);
     void setName(string _name);
     void setFullPeriod(int _full_period);
     void setIsHungry(bool _is_hungry);

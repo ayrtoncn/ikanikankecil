@@ -28,7 +28,7 @@ class Guppy : public Fish, public CoinProducer {
     static int getGuppyCount();
     int getGrowthLevel() const;
 
-    static void setGuppyCount();
+    static void setGuppyCount(int _guppy_count);
     void setGrowthLevel(int _growth_level);
 
     // METHODS

@@ -27,18 +27,18 @@ public:
     Point operator-(const Point& point);
 
     // GETTER SETTER
-    int getX() const;
-    int getY() const;
+    double getX() const;
+    double getY() const;
 
-    void setX(int _x);
-    void setY(int _y);
+    void setX(double _x);
+    void setY(double _y);
 
     // METHODS
     float getDistance(const Point& point);
 
 private:
-    int x;
-    int y;
+    double x;
+    double y;
 };
 
 #endif

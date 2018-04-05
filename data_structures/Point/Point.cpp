@@ -43,19 +43,19 @@ Point Point::operator-(const Point& point) {
 }
 
 // GETTER SETTER
-int Point::getX() const {
+double Point::getX() const {
     return x;
 }
 
-int Point::getY() const {
+double Point::getY() const {
     return y;
 }
 
-void Point::setX(int _x) {
+void Point::setX(double _x) {
     x = _x;
 }
 
-void Point::setY(int _y) {
+void Point::setY(double _y) {
     y = _y;
 }
 

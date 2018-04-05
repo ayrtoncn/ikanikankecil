@@ -10,14 +10,18 @@
 #define FISH_HPP
 
 #include <bits/stdc++.h>
-#include "Point.hpp"
+#include "../../data_structures/Point/Point.hpp"
+#include "oop.hpp"
 #include <iostream>
+#include <time.h>
 
 using namespace std;
 
 class Fish {
 public:
+    static int fish_count;
     // CTOR CCTOR DTOR OPERATOR=
+    Fish();
     Fish(string _name, int _price, int _full_period, int _hunger_period, int _coin_period, int _movement_speed, Point _position, char orientation);
     Fish(const Fish& fish);
     ~Fish();
@@ -40,17 +44,16 @@ public:
     void setIsHungry(bool _is_hungry);
     void setHungerPeriod(int _hunger_period);
     void setCoinPeriod(int _coin_period);
-    void setMovementSpeed(int movement_speed);
+    void setMovementSpeed(int _movement_speed);
     void setPosition(Point _position);
     void setOrientation(char _orientation);
 
     // METHODS
-    void Move();
-    virtual void DropCoin() = 0;
-    virtual void Eat() = 0;
-
-private:
-    static int fish_count;
+    void Move(double,double,double);
+    // virtual void DropCoin() = 0;
+    // virtual void Eat() = 0;
+    //controller
+    void dewaIkan();
 
 protected:
     string name;
@@ -62,6 +65,9 @@ protected:
     int movement_speed;
     Point position;
     char orientation; // 'l' for left and 'r' for right
+    double delay;
+    time_t start;
+    int arah;
 };
 
 #endif

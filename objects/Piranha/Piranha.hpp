@@ -9,10 +9,19 @@
 #ifndef PIRANHA_HPP
 #define PIRANHA_HPP
 
+#include <math.h>
+#include <sstream>
+#include <cstdlib>
+#include <thread>
+#include <mutex>
+#include <time.h>
+
 #include <bits/stdc++.h>
-#include "Fish.hpp"
-#include "Point.hpp"
+#include "../Fish/Fish.hpp"
+#include "../../data_structures/Point/Point.hpp"
 #include <iostream>
+#include "../CoinProducer/CoinProducer.hpp"
+#include "../Coin/Coin.hpp"
 
 using namespace std;
 
@@ -20,6 +29,7 @@ class Piranha : public Fish, public CoinProducer {
   public:
     // CTOR CCTOR DTOR
     Piranha();
+    Piranha(Point,char);
     Piranha(const Piranha &piranha);
     ~Piranha();
     Piranha &operator=(const Piranha &piranha);
@@ -27,14 +37,21 @@ class Piranha : public Fish, public CoinProducer {
     // GETTER SETTER
     static int getPiranhaCount();
 
-    static void setPiranhaCount();
+    static void setPiranhaCount(int _piranha_count);
 
     // METHODS
     void DropCoin();
     void Eat();
+    //control
+    void dewaPiranha();
 
-  private:
+    //static
     static int piranha_count;
+    static int PIRANHA_COIN_PERIOD;
+    static int PIRANHA_FULL_PERIOD;
+    static int PIRANHA_HUNGER_PERIOD;
+    static int PIRANHA_MOVEMENT_SPEED;
+    static int PIRANHA_PRICE;
 };
 
-#endif;
+#endif

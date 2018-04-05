@@ -3,15 +3,20 @@
 int Fish::fish_count = 0;
 
 // CTOR CCTOR DTOR OPERATOR=
-Fish::Fish() {
-    name = "";
-    price = 0;
-    full_period = 0;
+Fish::Fish(string _name, int _price, int _full_period, int _hunger_period, int _coin_period, int _movement_speed) {
+    name = _name;
+    price = _price;
+    full_period = _full_period;
     is_hungry = false;
-    hunger_period = 0;
-    coin_period = 0;
-    movement_speed = 0;
+    hunger_period = _hunger_period;
+    coin_period = _coin_period;
+    movement_speed = _movement_speed;
+    Point temp;
+    position = temp;
     orientation = 'l';
+    fish_count += 1;
+    time(&start);
+    delay= rand()%4+1;
 }
 
 Fish::Fish(string _name, int _price, int _full_period, int _hunger_period, int _coin_period, int _movement_speed, Point _position, char _orientation) {
@@ -147,41 +152,41 @@ void Fish::Move(){
         arah = 1;
         time(&start);
     }
-    cout<<"AA"<<difftime(time(0),start)<<endl;
+    // cout<<movement_speed<<endl;
     if(difftime(time(0),start)<=delay){
         switch(arah){
             case 1:
-                position.setY(position.getY()-movement_speed * (int)sec_since_last);
+                position.setY(position.getY()-movement_speed * sec_since_last);
                 break;
             case 2:
-                position.setY(position.getY()+movement_speed * (int)sec_since_last);
+                position.setY(position.getY()+movement_speed * sec_since_last);
                 break;
             case 3:
-                position.setX(position.getX()-movement_speed * (int)sec_since_last);
+                position.setX(position.getX()-movement_speed * sec_since_last);
                 orientation = 'l';
                 break;
             case 4:
-                position.setX(position.getX()+movement_speed * (int)sec_since_last);
+                position.setX(position.getX()+movement_speed * sec_since_last);
                 orientation = 'r';
                 break;
             case 5:
-                position.setX(position.getX()+movement_speed * (int)sec_since_last);
-                position.setY(position.getY()+movement_speed * (int)sec_since_last);
+                position.setX(position.getX()+movement_speed * sec_since_last);
+                position.setY(position.getY()+movement_speed * sec_since_last);
                 orientation = 'r';
                 break;
             case 6:
-                position.setX(position.getX()+movement_speed * (int)sec_since_last);
-                position.setY(position.getY()-movement_speed * (int)sec_since_last);
+                position.setX(position.getX()+movement_speed * sec_since_last);
+                position.setY(position.getY()-movement_speed * sec_since_last);
                 orientation = 'r';
                 break;
             case 7:
-                position.setX(position.getX()-movement_speed * (int)sec_since_last);
-                position.setY(position.getY()+movement_speed * (int)sec_since_last);
+                position.setX(position.getX()-movement_speed * sec_since_last);
+                position.setY(position.getY()+movement_speed * sec_since_last);
                 orientation = 'l';
                 break;
             case 8:
-                position.setX(position.getX()-movement_speed * (int)sec_since_last);
-                position.setY(position.getY()-movement_speed * (int)sec_since_last);
+                position.setX(position.getX()-movement_speed * sec_since_last);
+                position.setY(position.getY()-movement_speed * sec_since_last);
                 orientation = 'l';
                 break;
         }
@@ -190,50 +195,23 @@ void Fish::Move(){
         delay= rand()%4+1;
         arah = rand()%8+1;
     }
+    // cout<<"Y"<<position.getX()<<endl;
+    // cout<<"X"<<position.getY()<<endl;
+
 }
 void Fish::dewaIkan(){
     prevtime = time_since_start();
-    char input ='0';
     delay= rand()%4+1;
     arah = rand()%8+1;
     time(&start);
     bool running=true;
-    init();
     while(running){
+        //lock_guard<mutex> locker(lock1);
         now = time_since_start();
         sec_since_last = now - prevtime;
         prevtime = now;
-        handle_input();
-        for (auto key : get_tapped_keys()) {
-            switch (key) {
-            // r untuk reset
-            // x untuk keluar
-            case SDLK_g:
-                input = 'g';
-                break;
-            case SDLK_x:
-                input ='x';
-                break;
-            case SDLK_p:
-                input ='p';
-                break;
-            }
-        }
         Move();
-        cout<<delay<<endl;
-        // cout<<position.getX()<<endl;
-        // cout<<position.getY()<<endl;
-        clear_screen();
-        if(orientation =='l'){
-            draw_image("ikankiri.png", position.getX(), position.getY());
-        }else{
-            draw_image("ikankanan.png", position.getX(), position.getY());
-        }
-        if(input=='x'){
-            running=false;
-            input = '0';
-        }
-        update_screen();
+        // cout<<"Y"<<position.getX()<<endl;
+        // cout<<"X"<<position.getY()<<endl;
     }
-    close();
 }

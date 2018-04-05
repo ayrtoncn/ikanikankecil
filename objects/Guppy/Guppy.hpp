@@ -14,6 +14,12 @@
 #include "Point.hpp"
 #include <iostream>
 
+// constants still arbitrary
+#define GUPPY_FULL_PERIOD 10;
+#define GUPPY_HUNGER_PERIOD 10;
+#define GUPPY_COIN_PERIOD 10;
+#define GUPPY_MOVEMENT_SPEED 10;
+
 using namespace std;
 
 class Guppy : public Fish, public CoinProducer {

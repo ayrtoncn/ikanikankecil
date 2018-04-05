@@ -4,57 +4,61 @@
 #include <sstream>
 #include <cstdlib>
 #include <time.h>
-#include <pthread.h>
-#include <unistd.h>
+#include <thread>
 #include <mutex>
 using namespace std;
+
 const double speed = 50; // pixels per second
-
-
-struct thread_data{
-    int thread_id;
-    double cx=100;
-    double cy=100;
-    int orientation =1;
+struct fish{
+    int id;
+    int cx;
+    int cy;
+    int orientation;
     int jenis;
 };
 
-struct thread_data td[100];
-int k,j;
-pthread_t threads[100];
-pthread_mutex_t lock1;
+fish fishy[100];
+fish piranha[100];
 
-void *PrintHello(void *threadid){
-    long tid;
-    tid = (long)threadid;
-    cout<<"Hello"<<tid<<endl;
-    pthread_exit(NULL);
-}
-void *gerak(void *threadarg){
-    //init();
-    struct thread_data *my_data;
-    my_data = (struct thread_data *)threadarg;
-    // Menghitung FPS
+int num_pin;
+int num_fish;
+int num_ikan;
+
+thread ikan[100];
+std::mutex lock1;
+char input;
+void gerak(int ay,int jenis){
     int frames_passed = 0;
     double fpc_start = time_since_start();
     std::string fps_text = "FPS: 0";
 
     // Posisi ikan
-    srand(time(NULL));
-    double cy = rand()%(SCREEN_HEIGHT-10)+10;
-    double cx = rand()%(SCREEN_WIDTH-10)+10;
+    double cy = SCREEN_HEIGHT / 2;
+    double cx = SCREEN_WIDTH / 2;
+    if(jenis == 1){
+        cy = fishy[ay].cy;
+        cx = fishy[ay].cx;
+    }else{
+        cy = piranha[ay].cy;
+        cx = piranha[ay].cx;
+    }
 
     bool running = true;
 
     double prevtime = time_since_start();
     time_t start;
     time(&start);
+    srand(time(NULL));
     double delay= rand()%4+1;
     int arah = rand()%8+1;
-    int jenis = rand()%2+1;
     int orientation;
     while (running) {
-        pthread_mutex_lock(&lock1);
+        if(jenis == 1 && fishy[ay].id==-99){
+            break;
+        }else if(jenis == 2 && piranha[ay].id == -99){
+            break;
+        }
+        lock1.lock();
         double now = time_since_start();
         double sec_since_last = now - prevtime;
         prevtime = now;
@@ -63,28 +67,6 @@ void *gerak(void *threadarg){
         if (quit_pressed()) {
             running = false;
         }
-
-        // Gerakkan ikan selama tombol panah ditekan
-        // Kecepatan dikalikan dengan perbedaan waktu supaya kecepatan ikan
-        // konstan pada komputer yang berbeda.
-
-        // for (auto key : get_pressed_keys()) {
-        //     switch (key) {
-        //     case SDLK_UP:
-        //         cy -= speed * sec_since_last;
-        //         break;
-        //     case SDLK_DOWN:
-        //         cy += speed * sec_since_last;
-        //         break;
-        //     case SDLK_LEFT:
-        //         cx -= speed * sec_since_last;
-        //         break;
-        //     case SDLK_RIGHT:
-        //         cx += speed * sec_since_last;
-        //         break;
-        //     }
-        // }
-
         if(cx<=10){
             arah = 4;
             time(&start);
@@ -141,39 +123,29 @@ void *gerak(void *threadarg){
             delay= rand()%4+1;
             arah = rand()%8+1;
         }
+        if(jenis == 1){
+            fishy[ay].cx = cx;
+            fishy[ay].cy = cy;
+            fishy[ay].orientation=orientation;
+        }else{
+            piranha[ay].cx = cx;
+            piranha[ay].cy = cy;
+            piranha[ay].orientation=orientation;
+        }
         // Proses masukan yang bersifat "tombol"
-        // for (auto key : get_tapped_keys()) {
-        //     switch (key) {
-        //     // r untuk reset
-        //     case SDLK_r:
-        //         cy = SCREEN_HEIGHT / 2;
-        //         cx = SCREEN_WIDTH / 2;
-        //         break;
-        //     // x untuk keluar
-        //     case SDLK_x:
-        //         running = false;
-        //         break;
-        //     }
-        // }
-        int rc;
         for (auto key : get_tapped_keys()) {
             switch (key) {
             // r untuk reset
-            case SDLK_b:
-                // cy = SCREEN_HEIGHT / 2;
-                // cx = SCREEN_WIDTH / 2;
-                rc = pthread_create(&threads[k],NULL,gerak,(void *)&td[k]);
-                if(rc){
-                    cout<<"gagal";
-                    exit(-1);
-                }else{
-                    k++;
-                    j++;
-                }
-                break;
             // x untuk keluar
+            case SDLK_g:
+                input = 'g';
+                break;
             case SDLK_x:
-                close();
+                input ='x';
+                break;
+            case SDLK_p:
+                input ='p';
+                break;
             }
         }
 
@@ -182,123 +154,105 @@ void *gerak(void *threadarg){
         if (now - fpc_start > 1) {
             std::ostringstream strs;
             strs << "FPS: " ;
-            strs<< arah;
-            strs<< " ";
-            strs <<cx;
-            strs<<" ";
-            strs<<cy;
-            strs<<" ";
-            // strs<<time(0);
-            // strs<<"start";
-            // strs<<start;
-            // strs<<"delay";
-            // strs<<delay;
-            //strs << frames_passed/(now - fpc_start);
+            strs << frames_passed/(now - fpc_start);
             fps_text = strs.str();;
             fpc_start = now;
             frames_passed = 0;
         }
-        my_data->cx = cx;
-        my_data->cy = cy;
-        my_data->orientation = orientation;
-        my_data->jenis = jenis;
-        // Gambar ikan di posisi yang tepat.
-        // clear_screen();
-        // // draw_text("Panah untuk bergerak, r untuk reset, x untuk keluar", 18, 10, 10, 0, 0, 0);
-        // // draw_text(fps_text, 18, 10, 30, 0, 0, 0);
-        // if(orientation ==1){
-        //     draw_image("ikankiri.png", cx, cy);
-        // }else{
-        //     draw_image("ikankanan.png", cx, cy);
-        // }
-        
-        // update_screen();
-        pthread_mutex_unlock(&lock1);
+        for(int i = 0; i < num_pin; i++){
+            for(int j = 0; j < num_fish; j++){
+                if(fishy[j].cx <= piranha[i].cx+100 && fishy[j].cx >= piranha[i].cx-100 && fishy[j].cy <= piranha[i].cy+100 && fishy[j].cy >= piranha[i].cy-100){
+                    fishy[j].id = -99;
+                    fishy[j].cx = -100;
+                    fishy[j].cy = -100;
+                }
+            }
+        }
+        lock1.unlock();
     }
-    pthread_exit(NULL);
-    
-    //pthread_exit(NULL);
+    cout << "Mati" << endl;
 }
-
 
 
 int main( int argc, char* args[] )
 {
-    int rc;
-    int i;
-    k = 0;
-    j = 0;
-    // for(i=0;i<1;i++){
-    //     rc = pthread_create(&threads[i],NULL,gerak,(void *)&td[i]);
-    //     if(rc){
-    //         exit(-1);
-    //     }
-    // }
+    num_ikan = -1;
+    num_fish = -1;
+    num_pin = -1;
     init();
-    bool running = true;
+    // Menghitung FPS
+    bool running=true;
     while(running){
         handle_input();
         for (auto key : get_tapped_keys()) {
             switch (key) {
             // r untuk reset
-            case SDLK_b:
-                // cy = SCREEN_HEIGHT / 2;
-                // cx = SCREEN_WIDTH / 2;
-                pthread_mutex_lock(&lock1);
-                rc = pthread_create(&threads[k],NULL,gerak,(void *)&td[k]);
-                if(rc){
-                    cout<<"gagal";
-                    exit(-1);
-                }else{
-                    k++;
-                    j++;
-                }
-                pthread_mutex_unlock(&lock1);
-                break;
             // x untuk keluar
+            case SDLK_g:
+                input = 'g';
+                break;
             case SDLK_x:
-                running = false;
+                input ='x';
+                break;
+            case SDLK_p:
+                input ='p';
                 break;
             }
         }
-        cout<<k<<endl;
-        cout<<"j"<<j<<endl;
+        if(input == 'g'){
+            lock1.lock();
+            num_fish++;
+            num_ikan++;
+            fishy[num_fish].cx = (100*num_fish)%1000;
+            fishy[num_fish].cy = (100*num_fish)%580;
+            fishy[num_fish].id = num_fish;
+            fishy[num_fish].orientation = 1;
+            fishy[num_fish].jenis = 1;
+            ikan[num_ikan] = thread(gerak,num_fish,1);
+            input = '0';
+            lock1.unlock();
+        }else if(input == 'p'){
+            lock1.lock();
+            num_pin++;
+            num_ikan++;
+            piranha[num_pin].cx = (100*num_pin)%1000;
+            piranha[num_pin].cy = (100*num_pin)%580;
+            piranha[num_pin].id = num_pin;
+            piranha[num_pin].orientation = 1;
+            piranha[num_pin].jenis = 2;
+            ikan[num_ikan] = thread(gerak,num_pin,2);
+            input = '0';
+            lock1.unlock();
+        }
         clear_screen();
-        usleep(100);
-        //init();
-        // Gambar ikan di posisi yang tepat.
-        //clear_screen();
-        // // draw_text("Panah untuk bergerak, r untuk reset, x untuk keluar", 18, 10, 10, 0, 0, 0);
-        // // draw_text(fps_text, 18, 10, 30, 0, 0, 0);
-        // if(orientation ==1){
-        draw_image("bg1.jpg", SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
-        for(i=0;i<j;i++){
-            if(td[i].jenis==1){
-                if(td[i].orientation ==1){
-                    draw_image("ikankiri.png", td[i].cx, td[i].cy);
+        for(int i = 0; i <= num_fish ; i++){
+            if(fishy[i].jenis==1 && fishy[i].id != -99){
+                if(fishy[i].orientation ==1){
+                    draw_image("ikankiri.png", fishy[i].cx, fishy[i].cy);
                 }else{
-                    draw_image("ikankanan.png", td[i].cx, td[i].cy);
+                    draw_image("ikankanan.png", fishy[i].cx, fishy[i].cy);
                 }
-            }else{
-                if(td[i].orientation==1){
-                    draw_image("piranhakiri.png", td[i].cx, td[i].cy);
-                }else{
-                    draw_image("piranhakanan.png", td[i].cx, td[i].cy);
-                }
-                
             }
-            
+        }
+        for(int i = 0; i <= num_pin; i++){
+            if(piranha[i].id != 99){
+                if(piranha[i].orientation ==1){
+                    draw_image("piranhakiri.png", piranha[i].cx, piranha[i].cy);
+                }else{
+                    draw_image("piranhakanan.png", piranha[i].cx, piranha[i].cy);
+                }
+            }
+        }
+        if(input=='x'){
+            running=false;
+            input = '0';
         }
         update_screen();
-        // }else{
-        //     draw_image("ikankanan.png", cx, cy);
-        // }
-        
-        //update_screen();
-        //close();
+    }
+    for(int i = 0; i <= num_fish; i++){
+        fishy[i].id=-99;
+        ikan[i].join();
     }
     close();
-    //gerak();
-
     return 0;
 }

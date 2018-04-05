@@ -15,6 +15,7 @@
 #include <iostream>
 
 // constants still arbitrary
+#define GUPPY_PRICE 20;
 #define GUPPY_FULL_PERIOD 10;
 #define GUPPY_HUNGER_PERIOD 10;
 #define GUPPY_COIN_PERIOD 10;

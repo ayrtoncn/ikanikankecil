@@ -3,8 +3,9 @@
 Fish::fish_count = 0;
 
 // CTOR CCTOR DTOR OPERATOR=
-Fish::Fish(string _name, int _full_period, int _hunger_period, int _coin_period, int _movement_speed, Point _position, char orientation) {
+Fish::Fish(string _name, int _price, int _full_period, int _hunger_period, int _coin_period, int _movement_speed, Point _position, char orientation) {
     name = _name;
+    price = _price;
     full_period = _full_period;
     is_hungry = false;
     hunger_period = _hunger_period;

@@ -15,6 +15,7 @@
 #include <iostream>
 
 // constants still arbitrary
+#define PIRANHA_PRICE 30;
 #define PIRANHA_FULL_PERIOD 10;
 #define PIRANHA_HUNGER_PERIOD 10;
 #define PIRANHA_COIN_PERIOD 0;

@@ -18,7 +18,7 @@ using namespace std;
 class Fish {
 public:
     // CTOR CCTOR DTOR OPERATOR=
-    Fish(string _name, int _full_period, int _hunger_period, int _coin_period, int _movement_speed, Point _position, char orientation);
+    Fish(string _name, int _price, int _full_period, int _hunger_period, int _coin_period, int _movement_speed, Point _position, char orientation);
     Fish(const Fish& fish);
     ~Fish();
     Fish& operator=(const Fish& fish);
@@ -54,6 +54,7 @@ private:
 
 protected:
     string name;
+    int price;
     int full_period; // periode kenyang
     bool is_hungry;
     int hunger_period; // periode butuh makan

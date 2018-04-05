@@ -1,5 +1,5 @@
 // CTOR CCTOR DTOR
-Guppy::Guppy(Point position, char orientation): Fish("Guppy" + (string) (guppy_count + 1), GUPPY_FULL_PERIOD, GUPPY_HUNGER_PERIOD, GUPPY_COIN_PERIOD, GUPPY_MOVEMENT_SPEED, position, orientation) {
+Guppy::Guppy(Point position, char orientation): Fish("Guppy" + (string) (guppy_count + 1), GUPPY_PRICE, GUPPY_FULL_PERIOD, GUPPY_HUNGER_PERIOD, GUPPY_COIN_PERIOD, GUPPY_MOVEMENT_SPEED, position, orientation) {
     guppy_count++;
 }
 
@@ -40,7 +40,7 @@ void Guppy::setGrowthLevel(int _growth_level) {
 
 // METHODS
 void Guppy::DropCoin() {
-
+    Coin coin(10, poisition, 1);
 }
 
 void Guppy::Eat() {

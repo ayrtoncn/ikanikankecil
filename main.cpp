@@ -8,7 +8,7 @@
 #include <mutex>
 using namespace std;
 
-const double speed = 50; // pixels per second
+const double speed = 60; // pixels per second
 struct fish{
     int id;
     int cx;
@@ -18,11 +18,8 @@ struct fish{
 };
 
 fish fishy[100];
-fish piranha[100];
 
-int num_pin;
 int num_fish;
-int num_ikan;
 
 thread ikan[100];
 std::mutex lock1;
@@ -35,13 +32,8 @@ void gerak(int ay,int jenis){
     // Posisi ikan
     double cy = SCREEN_HEIGHT / 2;
     double cx = SCREEN_WIDTH / 2;
-    if(jenis == 1){
-        cy = fishy[ay].cy;
-        cx = fishy[ay].cx;
-    }else{
-        cy = piranha[ay].cy;
-        cx = piranha[ay].cx;
-    }
+    cy = fishy[ay].cy;
+    cx = fishy[ay].cx;
 
     bool running = true;
 
@@ -53,12 +45,11 @@ void gerak(int ay,int jenis){
     int arah = rand()%8+1;
     int orientation;
     while (running) {
-        if(jenis == 1 && fishy[ay].id==-99){
-            break;
-        }else if(jenis == 2 && piranha[ay].id == -99){
+        std::lock_guard<mutex> locker(lock1);
+        //cout << std::this_thread::get_id() << endl;
+        if(fishy[ay].id==-99){
             break;
         }
-        lock1.lock();
         double now = time_since_start();
         double sec_since_last = now - prevtime;
         prevtime = now;
@@ -123,15 +114,9 @@ void gerak(int ay,int jenis){
             delay= rand()%4+1;
             arah = rand()%8+1;
         }
-        if(jenis == 1){
-            fishy[ay].cx = cx;
-            fishy[ay].cy = cy;
-            fishy[ay].orientation=orientation;
-        }else{
-            piranha[ay].cx = cx;
-            piranha[ay].cy = cy;
-            piranha[ay].orientation=orientation;
-        }
+        fishy[ay].cx = cx;
+        fishy[ay].cy = cy;
+        fishy[ay].orientation=orientation;
         // Proses masukan yang bersifat "tombol"
         for (auto key : get_tapped_keys()) {
             switch (key) {
@@ -159,16 +144,18 @@ void gerak(int ay,int jenis){
             fpc_start = now;
             frames_passed = 0;
         }
-        for(int i = 0; i < num_pin; i++){
-            for(int j = 0; j < num_fish; j++){
-                if(fishy[j].cx <= piranha[i].cx+100 && fishy[j].cx >= piranha[i].cx-100 && fishy[j].cy <= piranha[i].cy+100 && fishy[j].cy >= piranha[i].cy-100){
-                    fishy[j].id = -99;
-                    fishy[j].cx = -100;
-                    fishy[j].cy = -100;
+        
+        if(jenis == 1){
+            for(int i = 0; i < num_fish; i++){
+                if(fishy[i].jenis == 0){
+                    if(fishy[i].cx <= fishy[ay].cx+30 && fishy[i].cx >= fishy[ay].cx-30 && fishy[i].cy <= fishy[ay].cy+30 && fishy[i].cy >= fishy[ay].cy-30){
+                        fishy[i].id = -99;
+                        fishy[i].cx = -100;
+                        fishy[i].cy = -100;
+                    }
                 }
-            }
+            }            
         }
-        lock1.unlock();
     }
     cout << "Mati" << endl;
 }
@@ -176,9 +163,7 @@ void gerak(int ay,int jenis){
 
 int main( int argc, char* args[] )
 {
-    num_ikan = -1;
     num_fish = -1;
-    num_pin = -1;
     init();
     // Menghitung FPS
     bool running=true;
@@ -200,46 +185,38 @@ int main( int argc, char* args[] )
             }
         }
         if(input == 'g'){
-            lock1.lock();
             num_fish++;
-            num_ikan++;
+            fishy[num_fish].cx = (100*num_fish)%1000;
+            fishy[num_fish].cy = (100*num_fish)%580;
+            fishy[num_fish].id = num_fish;
+            fishy[num_fish].orientation = 1;
+            fishy[num_fish].jenis = 0;
+            ikan[num_fish] = thread(gerak,num_fish,0);
+            input = '0';
+        }else if(input == 'p'){
+            num_fish++;
             fishy[num_fish].cx = (100*num_fish)%1000;
             fishy[num_fish].cy = (100*num_fish)%580;
             fishy[num_fish].id = num_fish;
             fishy[num_fish].orientation = 1;
             fishy[num_fish].jenis = 1;
-            ikan[num_ikan] = thread(gerak,num_fish,1);
+            ikan[num_fish] = thread(gerak,num_fish,1);
             input = '0';
-            lock1.unlock();
-        }else if(input == 'p'){
-            lock1.lock();
-            num_pin++;
-            num_ikan++;
-            piranha[num_pin].cx = (100*num_pin)%1000;
-            piranha[num_pin].cy = (100*num_pin)%580;
-            piranha[num_pin].id = num_pin;
-            piranha[num_pin].orientation = 1;
-            piranha[num_pin].jenis = 2;
-            ikan[num_ikan] = thread(gerak,num_pin,2);
-            input = '0';
-            lock1.unlock();
         }
         clear_screen();
         for(int i = 0; i <= num_fish ; i++){
-            if(fishy[i].jenis==1 && fishy[i].id != -99){
+            if(fishy[i].jenis==0 && fishy[i].id != -99){
                 if(fishy[i].orientation ==1){
                     draw_image("ikankiri.png", fishy[i].cx, fishy[i].cy);
                 }else{
                     draw_image("ikankanan.png", fishy[i].cx, fishy[i].cy);
                 }
             }
-        }
-        for(int i = 0; i <= num_pin; i++){
-            if(piranha[i].id != 99){
-                if(piranha[i].orientation ==1){
-                    draw_image("piranhakiri.png", piranha[i].cx, piranha[i].cy);
+            if(fishy[i].jenis==1 && fishy[i].id != -99){
+                if(fishy[i].orientation ==1){
+                    draw_image("piranhakiri.png", fishy[i].cx, fishy[i].cy);
                 }else{
-                    draw_image("piranhakanan.png", piranha[i].cx, piranha[i].cy);
+                    draw_image("piranhakanan.png", fishy[i].cx, fishy[i].cy);
                 }
             }
         }
@@ -247,12 +224,24 @@ int main( int argc, char* args[] )
             running=false;
             input = '0';
         }
+        for(int ay = 0; ay < num_fish; ay++){
+            if(fishy[ay].jenis == 1){
+                for(int i = 0; i < num_fish; i++){
+                    if(fishy[i].jenis == 0){
+                        if(fishy[i].cx <= fishy[ay].cx+30 && fishy[i].cx >= fishy[ay].cx-30 && fishy[i].cy <= fishy[ay].cy+30 && fishy[i].cy >= fishy[ay].cy-30){
+                            fishy[i].id = -99;
+                            fishy[i].cx = -100;
+                            fishy[i].cy = -100;
+                        }
+                    }
+                }
+            }
+        }  
         update_screen();
     }
     for(int i = 0; i <= num_fish; i++){
         fishy[i].id=-99;
         ikan[i].join();
     }
-    close();
     return 0;
 }

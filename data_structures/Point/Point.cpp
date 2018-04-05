@@ -5,11 +5,11 @@
  * Version :
  * USAGE : 
 */
-
+#include "Point.hpp"
 // CTOR CCTOR DTOR
 Point::Point() {
-    x = 0;
-    y = 0;
+    x = 500;
+    y = 500;
 }
 
 Point::Point(const Point& point) {
@@ -21,7 +21,7 @@ Point::~Point() {
 
 }
 
-Point::Point& operator=(const Point& point) {
+Point& Point::operator=(const Point& point) {
     this->x = point.x;
     this->y = point.y;
     return *this;

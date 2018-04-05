@@ -37,7 +37,8 @@ public:
     float getDistance(const Point& point);
 
 private:
-    int x, y;
+    int x;
+    int y;
 };
 
 #endif

@@ -34,7 +34,7 @@ public:
     void setRadius(int _radius);
 
     // METHODS
-
+    void Move();
 
 private:
     int value;

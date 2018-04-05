@@ -69,3 +69,9 @@ void Food::setPosition(Point _position) {
 void Food::setRadius(int _radius) {
     radius = _radius;
 }
+
+void Move() {
+    if (position.getY() < SCREEN_HEIGHT) {
+        position.setY(position.getY()++);
+    }
+}

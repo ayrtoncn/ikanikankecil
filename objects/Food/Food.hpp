@@ -33,7 +33,7 @@ public:
     void setRadius(int _radius);
 
     // METHODS
-
+    void Move();
 
 private:
     string name;

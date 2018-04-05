@@ -70,6 +70,7 @@ void MoveLeft() {
 }
 
 void takeCoin(Coin& coin) {
+    // alternatif 1
     if ((position.getX()+radius <= coin.position.getX()-coin.getRadius()) or (position.getX()-radius >= coin.position.getX()+coin.getRadius()) or (position.getY()-radius >= coin.position.getY()+coin.getRadius())) {
         while ((position.getX()+radius <= coin.position.getX()-coin.getRadius()) or (position.getX()-radius >= coin.position.getX()+coin.getRadius())) {
             if (position.getX()+radius <= coin.position.getX()-coin.getRadius()) {
@@ -80,5 +81,16 @@ void takeCoin(Coin& coin) {
         }
         while (position.getY()-radius >= coin.position.getY()+coin.getRadius()); // wait until coin falls down
     }
-    coin.~Coin();
+
+    // alternatif 2
+    // if ((position.getX()+radius <= coin.position.getX()-coin.getRadius()) or (position.getX()-radius >= coin.position.getX()+coin.getRadius()) or (position.getY()-radius >= coin.position.getY()+coin.getRadius())) {
+    //     if (position.getX()+radius <= coin.position.getX()-coin.getRadius()) {
+    //         MoveRight();
+    //     } else if (position.getX()-radius >= coin.position.getX()+coin.getRadius()) {
+    //         MoveLeft();
+    //     }
+    // }
+    if ((position.getX()+radius >= coin.position.getX()-coin.getRadius()) or (position.getX()-radius <= coin.position.getX()+coin.getRadius()) or (position.getY()-radius <= coin.position.getY()+coin.getRadius())) {
+        coin.~Coin();
+    }
 }

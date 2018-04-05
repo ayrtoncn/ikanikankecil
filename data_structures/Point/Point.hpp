@@ -9,6 +9,7 @@
 #ifndef POINT_HPP
 #define POINT_HPP
 
+#include <bits/stdc++.h>
 #include <iostream>
 
 using namespace std;

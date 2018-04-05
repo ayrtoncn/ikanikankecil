@@ -1,73 +1,62 @@
-/*
- * File: Fish.hpp
- * Description: Abstraction of class Fish
- * Author :
- * Version :
- * USAGE : #include "Fish.hpp"
-*/
-
-#ifndef FISH_HPP
-#define FISH_HPP
-
-#include <bits/stdc++.h>
-#include "../../data_structures/Point/Point.hpp"
 #include "oop.hpp"
 #include <iostream>
+#include <math.h>
+#include <sstream>
+#include <cstdlib>
 #include <time.h>
-
+#include <thread>
+#include <mutex>
+#include "Fish.hpp"
 using namespace std;
 
-class Fish {
-public:
-    static int fish_count;
-    // CTOR CCTOR DTOR OPERATOR=
-    Fish();
-    Fish(string _name, int _price, int _full_period, int _hunger_period, int _coin_period, int _movement_speed, Point _position, char orientation);
-    Fish(const Fish& fish);
-    ~Fish();
-    Fish& operator=(const Fish& fish);
-
-    // GETTER SETTER
-    static int getFishCount();
-    string getName() const;
-    int getFullPeriod() const;
-    bool getIsHungry() const;
-    int getHungerPeriod() const;
-    int getCoinPeriod() const;
-    int getMovementSpeed() const;
-    Point getPosition() const;
-    char getOrientation() const;
-
-    static void setFishCount(int _fish_count);
-    void setName(string _name);
-    void setFullPeriod(int _full_period);
-    void setIsHungry(bool _is_hungry);
-    void setHungerPeriod(int _hunger_period);
-    void setCoinPeriod(int _coin_period);
-    void setMovementSpeed(int _movement_speed);
-    void setPosition(Point _position);
-    void setOrientation(char _orientation);
-
-    // METHODS
-    void Move(double,double,double);
-    // virtual void DropCoin() = 0;
-    // virtual void Eat() = 0;
-    //controller
-    void dewaIkan();
-
-protected:
-    string name;
-    int price;
-    int full_period; // periode kenyang
-    bool is_hungry;
-    int hunger_period; // periode butuh makan
-    int coin_period;
-    int movement_speed;
-    Point position;
-    char orientation; // 'l' for left and 'r' for right
-    double delay;
-    time_t start;
-    int arah;
+const double speed = 50; // pixels per second
+struct fish{
+    int id;
+    int cx;
+    int cy;
+    int orientation;
+    int jenis;
 };
 
-#endif
+// Fish fishy[100];
+// Fish piranha[100];
+
+int num_pin;
+int num_fish;
+int num_ikan;
+
+// thread ikan[100];
+// mutex lock1;
+char input;
+
+
+int main( int argc, char* args[] )
+{
+    num_ikan = 1;
+    num_fish = 1;
+    num_pin = -1;
+    Point temp;
+    string nama = "adit";
+    Fish F(nama,50,50,50,50,50,temp,'l');
+    init();
+    handle_input();
+    clear_screen();
+    bool running = true;
+    while(running){
+        F.Move();
+        for(int i = 0; i <= 1 ; i++){
+            if(F.getOrientation() =='l'){
+                draw_image("ikankiri.png", F.getPosition().getX(), F.getPosition().getY());
+            }else{
+                draw_image("ikankanan.png", F.getPosition().getX(), F.getPosition().getY());
+            }
+            
+        }
+        // for(int i = 0; i <= num_pin; i++){
+        //     if(piranha[i].getOrientation() =='l'){
+        //         draw_image("piranhakiri.png", piranha[i].getPosition().getX(), piranha[i].getPosition().getY());
+        //     }else{
+        //         draw_image("piranhakanan.png", piranha[i].getPosition().getX(), piranha[i].getPosition().getY());
+        //     }
+        // }
+     

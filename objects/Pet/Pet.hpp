@@ -14,9 +14,6 @@
 #include <iostream>
 #include "CoinGatherer"
 
-const int SCREEN_WIDTH = 1280;
-const int SCREEN_HEIGHT = 720;
-
 class Snail : public CoinGatherer{
 public:
 // CTOR CCTOR DTOR
@@ -28,25 +25,17 @@ public:
 // GETTER SETTER
     int getMovementSpeed() const;
     Point getPoint() const;
-    int getOrientation() const;
-    int getRadius() const;
 
     void setMovementSpeed(int _movement_speed);
     void setPosition(int _position);
-    void setOrientation(int _orientation);
-    void setRadius(int _radius);
 
 // METHODS
-    void MoveRight();
-    void MoveLeft();
-    void takeCoin(Coin& coin);
+    void Move();
+    void takeCoin();
 
 private:
     int movement_speed;
     Point position;
-    // recently added
-    int orientation;
-    int radius;
 };
 
 #endif

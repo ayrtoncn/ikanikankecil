@@ -75,9 +75,3 @@ void Coin::setPosition(Point _position) {
 void Coin::setRadius(int _radius) {
     radius = _radius;
 }
-
-void Move() {
-    if (position.getY() < SCREEN_HEIGHT) {
-        position.setY(position.getY()++);
-    }
-}

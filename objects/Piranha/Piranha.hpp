@@ -14,13 +14,6 @@
 #include "Point.hpp"
 #include <iostream>
 
-// constants still arbitrary
-#define PIRANHA_PRICE 30;
-#define PIRANHA_FULL_PERIOD 10;
-#define PIRANHA_HUNGER_PERIOD 10;
-#define PIRANHA_COIN_PERIOD 0;
-#define PIRANHA_MOVEMENT_SPEED 10;
-
 using namespace std;
 
 class Piranha : public Fish, public CoinProducer {
@@ -34,7 +27,7 @@ class Piranha : public Fish, public CoinProducer {
     // GETTER SETTER
     static int getPiranhaCount();
 
-    static void setPiranhaCount(int _piranha_count);
+    static void setPiranhaCount();
 
     // METHODS
     void DropCoin();

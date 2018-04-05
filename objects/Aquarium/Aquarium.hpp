@@ -1,41 +1,49 @@
-#ifndef AQUARIUM_HPP
-#define AQUARIUM_HPP
-
-#include "LinkedList.hpp"
+#include "oop.hpp"
+#include <iostream>
+#include <math.h>
+#include <sstream>
+#include <cstdlib>
+#include <time.h>
+#include <thread>
+#include <mutex>
 #include "Fish.hpp"
-#include "Coin.hpp"
-#include "Food.hpp"
-
 using namespace std;
 
-class Aquarium {
-public:
-    // CTOR
-    Aquarium();
-    Aquarium(int _width, int _height);
-    Aquarium(const Aquarium& aquarium);
-
-    // GETTER SETTER
-    
-
-    // METHODS
-    friend void AddFishFromFish(const Fish& _fish);
-    friend void AddCoinFromCoins(const Coin &coin);
-    friend void AddFoodfromFoods(const Food &food);
-
-    friend void DeleteFishFromFish(const Fish &_fish);
-    friend void DeleteCoinFromCoins(const Coin &coin);
-    friend void DeleteFoodfromFoods(const Food &food);
-
-    void MoveAll();
-
-  private:
-    int width;
-    int height;
-    LinkedList<Fish*> fish;
-    LinkedList<Coin> coins;
-    LinkedList<Food> foods;
-    Snail snail;
+const double speed = 50; // pixels per second
+struct fish{
+    int id;
+    int cx;
+    int cy;
+    int orientation;
+    int jenis;
 };
 
-#endif
+// Fish fishy[100];
+// Fish piranha[100];
+
+int num_pin;
+int num_fish;
+int num_ikan;
+
+// thread ikan[100];
+// mutex lock1;
+char input;
+
+
+int main( int argc, char* args[] )
+{
+    num_ikan = 1;
+    num_fish = 1;
+    num_pin = -1;
+    Point temp;
+    string nama = "adit";
+    Fish F(nama,50,50,50,50,50,temp,'l');
+    init();
+    handle_input();
+
+    bool running = true;
+    while(running){
+        clear_screen();
+        F.Move();
+        for(int i = 0; i <= 1 ; i++){
+            if(F.getOr

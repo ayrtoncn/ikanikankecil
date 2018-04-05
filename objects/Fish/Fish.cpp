@@ -131,9 +131,8 @@ void Fish::setPosition(Point _position) {
 void Fish::setOrientation(char _orientation) {
     orientation = _orientation;
 }
-void Fish::Move(double prevtime,double now,double sec_since_last){
+void Fish::Move(){
     srand(time(NULL));
-
     prevtime = now;
     if(position.getX()<=10){
         arah = 4;
@@ -148,40 +147,41 @@ void Fish::Move(double prevtime,double now,double sec_since_last){
         arah = 1;
         time(&start);
     }
+    cout<<"AA"<<difftime(time(0),start)<<endl;
     if(difftime(time(0),start)<=delay){
         switch(arah){
             case 1:
-                position.setY(position.getY()-movement_speed * sec_since_last);
+                position.setY(position.getY()-movement_speed * (int)sec_since_last);
                 break;
             case 2:
-                position.setY(position.getY()+movement_speed * sec_since_last);
+                position.setY(position.getY()+movement_speed * (int)sec_since_last);
                 break;
             case 3:
-                position.setX(position.getX()-movement_speed * sec_since_last);
+                position.setX(position.getX()-movement_speed * (int)sec_since_last);
                 orientation = 'l';
                 break;
             case 4:
-                position.setX(position.getX()+movement_speed * sec_since_last);
+                position.setX(position.getX()+movement_speed * (int)sec_since_last);
                 orientation = 'r';
                 break;
             case 5:
-                position.setX(position.getX()+movement_speed * sec_since_last);
-                position.setY(position.getY()+movement_speed * sec_since_last);
+                position.setX(position.getX()+movement_speed * (int)sec_since_last);
+                position.setY(position.getY()+movement_speed * (int)sec_since_last);
                 orientation = 'r';
                 break;
             case 6:
-                position.setX(position.getX()+movement_speed * sec_since_last);
-                position.setY(position.getY()-movement_speed * sec_since_last);
+                position.setX(position.getX()+movement_speed * (int)sec_since_last);
+                position.setY(position.getY()-movement_speed * (int)sec_since_last);
                 orientation = 'r';
                 break;
             case 7:
-                position.setX(position.getX()-movement_speed * sec_since_last);
-                position.setY(position.getY()+movement_speed * sec_since_last);
+                position.setX(position.getX()-movement_speed * (int)sec_since_last);
+                position.setY(position.getY()+movement_speed * (int)sec_since_last);
                 orientation = 'l';
                 break;
             case 8:
-                position.setX(position.getX()-movement_speed * sec_since_last);
-                position.setY(position.getY()-movement_speed * sec_since_last);
+                position.setX(position.getX()-movement_speed * (int)sec_since_last);
+                position.setY(position.getY()-movement_speed * (int)sec_since_last);
                 orientation = 'l';
                 break;
         }
@@ -192,10 +192,48 @@ void Fish::Move(double prevtime,double now,double sec_since_last){
     }
 }
 void Fish::dewaIkan(){
+    prevtime = time_since_start();
+    char input ='0';
     delay= rand()%4+1;
     arah = rand()%8+1;
+    time(&start);
     bool running=true;
+    init();
     while(running){
-        //Move();
+        now = time_since_start();
+        sec_since_last = now - prevtime;
+        prevtime = now;
+        handle_input();
+        for (auto key : get_tapped_keys()) {
+            switch (key) {
+            // r untuk reset
+            // x untuk keluar
+            case SDLK_g:
+                input = 'g';
+                break;
+            case SDLK_x:
+                input ='x';
+                break;
+            case SDLK_p:
+                input ='p';
+                break;
+            }
+        }
+        Move();
+        cout<<delay<<endl;
+        // cout<<position.getX()<<endl;
+        // cout<<position.getY()<<endl;
+        clear_screen();
+        if(orientation =='l'){
+            draw_image("ikankiri.png", position.getX(), position.getY());
+        }else{
+            draw_image("ikankanan.png", position.getX(), position.getY());
+        }
+        if(input=='x'){
+            running=false;
+            input = '0';
+        }
+        update_screen();
     }
+    close();
 }

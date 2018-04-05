@@ -14,13 +14,6 @@
 #include "Point.hpp"
 #include <iostream>
 
-// constants still arbitrary
-#define GUPPY_PRICE 20;
-#define GUPPY_FULL_PERIOD 10;
-#define GUPPY_HUNGER_PERIOD 10;
-#define GUPPY_COIN_PERIOD 10;
-#define GUPPY_MOVEMENT_SPEED 10;
-
 using namespace std;
 
 class Guppy : public Fish, public CoinProducer {
@@ -35,7 +28,7 @@ class Guppy : public Fish, public CoinProducer {
     static int getGuppyCount();
     int getGrowthLevel() const;
 
-    static void setGuppyCount(int _guppy_count);
+    static void setGuppyCount();
     void setGrowthLevel(int _growth_level);
 
     // METHODS

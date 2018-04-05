@@ -10,8 +10,8 @@
 #define PIRANHA_HPP
 
 #include <bits/stdc++.h>
-#include "Fish.hpp"
-#include "Point.hpp"
+#include "../Fish/Fish.hpp"
+#include "../../data_structures/Point/Point.hpp"
 #include <iostream>
 
 using namespace std;

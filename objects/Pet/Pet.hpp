@@ -10,9 +10,9 @@
 #define PET_HPP
 
 #include <bits/stdc++.h>
-#include "Point.hpp"
+#include "../../data_structures/Point/Point.hpp"
 #include <iostream>
-#include "CoinGatherer"
+#include "../CoinGatherer/CoinGatherer.hpp"
 
 class Snail : public CoinGatherer{
 public:

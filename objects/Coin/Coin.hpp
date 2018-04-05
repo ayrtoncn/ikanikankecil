@@ -10,7 +10,7 @@
 #define COIN_HPP
 
 #include <bits/stdc++.h>
-#include "Point.hpp"
+#include "../../data_structures/Point.hpp"
 #include <iostream>
 
 class Coin {

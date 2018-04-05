@@ -10,7 +10,7 @@
 #define FISH_HPP
 
 #include <bits/stdc++.h>
-#include "Point.hpp"
+#include "../../data_structures/Point/Point.hpp"
 #include <iostream>
 
 using namespace std;

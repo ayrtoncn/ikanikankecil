@@ -15,6 +15,12 @@ Coin::Coin() {
     position.setY(0);
 }
 
+Coin::Coin(int _value, int _movement_speed, Point _position) {
+    value = _value;
+    movement_speed = _movement_speed;
+    position = _position;
+}
+
 Coin::Coin(const Coin& coin) {
     value = coin.value;
     movement_speed = coin.movement_speed;
@@ -50,6 +56,10 @@ Point Coin::getPosition() const {
     return position;
 }
 
+int Coin::getRadius() const {
+    return radius;
+}
+
 void Coin::setValue(int _value) {
     value = _value;
 }
@@ -60,4 +70,8 @@ void Coin::setMovementSpeed(int _movement_speed) {
 
 void Coin::setPosition(Point _position) {
     position = _position;
+}
+
+void Coin::setRadius(int _radius) {
+    radius = _radius;
 }

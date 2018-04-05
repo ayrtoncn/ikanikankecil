@@ -50,6 +50,10 @@ Point Food::getPosition() const {
     return position;
 }
 
+int Food::getRadius() const {
+    return radius;
+}
+
 void Food::setName(string _name) {
     name = _name;
 }
@@ -60,4 +64,8 @@ void Food::setMovementSpeed(int _movement_speed) {
 
 void Food::setPosition(Point _position) {
     position = _position;
+}
+
+void Food::setRadius(int _radius) {
+    radius = _radius;
 }

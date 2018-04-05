@@ -18,6 +18,7 @@ public:
     // CTOR CCTOR DTOR
     Coin();
     Coin(const Coin& coin);
+    Coin(int _value, int _movement_speed, Point _position);
     ~Coin();
     Coin& operator=(const Coin& coin);
 
@@ -25,10 +26,12 @@ public:
     int getValue() const;
     int getMovementSpeed() const;
     Point getPosition() const;
+    int getRadius() const;
 
     void setValue(int _value);
     void setMovementSpeed(int _movement_speed);
     void setPosition(Point _position);
+    void setRadius(int _radius);
 
     // METHODS
 
@@ -37,6 +40,7 @@ private:
     int value;
     int movement_speed;
     Point position;
+    int radius;
 };
 
 #endif

@@ -25,10 +25,12 @@ public:
     string getName() const;
     int getMovementSpeed() const;
     Point getPosition() const;
+    int getRadius() const;
 
     void setName(string _name);
     void setMovementSpeed(int _movement_speed);
     void setPosition(Point _position);
+    void setRadius(int _radius);
 
     // METHODS
 
@@ -37,6 +39,7 @@ private:
     string name;
     int movement_speed;
     Point position;
+    int radius;
 };
 
 #endif

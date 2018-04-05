@@ -70,14 +70,15 @@ void MoveLeft() {
 }
 
 void takeCoin(Coin& coin) {
-    while (position.getX() != coin.position.getX()) {
-        if (Snail.position.getX() < coin.position.getX()) {
-            MoveRight();
-        } else {
-            MoveLeft();
+    if ((position.getX()+radius <= coin.position.getX()-coin.getRadius()) or (position.getX()-radius >= coin.position.getX()+coin.getRadius()) or (position.getY()-radius >= coin.position.getY()+coin.getRadius())) {
+        while ((position.getX()+radius <= coin.position.getX()-coin.getRadius()) or (position.getX()-radius >= coin.position.getX()+coin.getRadius())) {
+            if (position.getX()+radius <= coin.position.getX()-coin.getRadius()) {
+                MoveRight();
+            } else if (position.getX()-radius >= coin.position.getX()+coin.getRadius()) {
+                MoveLeft();
+            }
         }
+        while (position.getY()-radius >= coin.position.getY()+coin.getRadius()); // wait until coin falls down
     }
-    while (position.getY() != coin.position.getY());
-
     coin.~Coin();
 }

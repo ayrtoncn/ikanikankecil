@@ -29,10 +29,12 @@ public:
     int getMovementSpeed() const;
     Point getPoint() const;
     int getOrientation() const;
+    int getRadius() const;
 
     void setMovementSpeed(int _movement_speed);
     void setPosition(int _position);
     void setOrientation(int _orientation);
+    void setRadius(int _radius);
 
 // METHODS
     void MoveRight();
@@ -42,7 +44,9 @@ public:
 private:
     int movement_speed;
     Point position;
+    // recently added
     int orientation;
+    int radius;
 };
 
 #endif

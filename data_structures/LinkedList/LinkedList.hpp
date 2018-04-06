@@ -48,11 +48,13 @@ template <class T>
 void Node<T>::setNext(Node<T>* N){
     next = N;
 }
+
+
 template <class T>
 class LinkedList;
 template <class T>
 ostream& operator<<(ostream& s, const LinkedList<T>& L){
-    for(int i = 0; i < L.getAmmount(); i++){
+    for(int i = 0; i < L.getAmount(); i++){
         s << L[i] << endl;
     }
     return s;
@@ -77,7 +79,7 @@ public:
     //method
     int find(T) const;
     bool isEmpty() const;
-    int getAmmount()const;
+    int getAmount()const;
     Node<T>* getNode(int) const;
     void add(T);
     void remove(T);
@@ -86,23 +88,23 @@ public:
     T operator[](int i) const;
 private:
     Node<T> *head;
-    int ammount;
+    int amount;
 };
 
 template <class T>
 LinkedList<T>::LinkedList(){
     head = NULL;
-    ammount = 0;
+    amount = 0;
 }
 template <class T>
-int LinkedList<T>::getAmmount() const{
-    return ammount;
+int LinkedList<T>::getAmount() const{
+    return amount;
 }
 
 template <class T>
 LinkedList<T>::LinkedList(Node<T> N){
     head = &N;
-    ammount = 1;
+    amount = 1;
 }
 
 template <class T>
@@ -121,43 +123,31 @@ LinkedList<T>::~LinkedList(){
 }
 template <class T>
 LinkedList<T>::LinkedList(const LinkedList<T>& L){
-    ammount = L.ammount;
+    amount = L.amount;
     head = new Node<T>(L.getVal());
     Node<T> current = head;
-    for(int i = 1; i < ammount; i++){
+    for(int i = 1; i < amount; i++){
         current.next = new Node<T>(L[i].next->getVal());
         current = current.next;
     }
     current.next = NULL;
 }
+
 template <class T>
 LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& L){
-    Node<T>* current = head;
-    Node<T>* next = head->getNext();
-    delete current();
-    while(next){
-        current = next;
-        next = current->getNext();
-        delete current;
-    }
-    ammount = L.ammount;
-    head = new Node<T>(L.getVal());
-    current = head;
-    for(int i = 1; i < ammount; i++){
-        current->next = new Node<T>(L[i].next->getVal());
-        current = current->next;
-    }
-    current->next = NULL;
-    return *this;
+    if(!L.head){
+        return *this;
+    }    
 }
+
 template <class T>
 int LinkedList<T>::find(T val) const{
     Node<T>* current = head;
     int i = 0;
-    while(current->getVal() != val && ++i < ammount){
+    while(current->getVal() != val && ++i < amount){
         current = current->getNext();
     }
-    if(i == ammount){
+    if(i == amount){
         throw("Not Found");
     }else{
         return i;
@@ -165,12 +155,12 @@ int LinkedList<T>::find(T val) const{
 }
 template <class T>
 bool LinkedList<T>::isEmpty() const{
-    return(ammount == 0);
+    return(amount == 0);
 }
 template <class T>
 void LinkedList<T>::add(T val){
     Node<T>* current = head;
-    if(ammount == 0){
+    if(amount == 0){
         current = head;
         head = new Node<T>(val);
     }else{
@@ -180,7 +170,7 @@ void LinkedList<T>::add(T val){
         Node<T>* N = new Node<T>(val);
         current->setNext(N);
     }
-    ammount++;
+    amount++;
 }
 template <class T>
 void LinkedList<T>::remove(T val){
@@ -196,7 +186,7 @@ void LinkedList<T>::remove(T val){
                 prev->setNext(current);
             }
             delete curr;
-            ammount--;
+            amount--;
         }else{
             prev = current;
             current = current->getNext();
@@ -205,9 +195,8 @@ void LinkedList<T>::remove(T val){
 }
 template <class T>
 T LinkedList<T>::get(int i) const{
-    if(i >= ammount){
-        throw "List Index is beyond the ammount of data";
-        return -1;
+    if(i >= amount){
+        throw "List Index is beyond the amount of data";
     }else{
         Node<T>* current = this->head;
         for(int j = 1; j <= i ;j++){
@@ -223,8 +212,8 @@ T LinkedList<T>::operator[](int i) const{
 template <class T>
 Node<T>* LinkedList<T>::getNode(int i) const{
     Node<T>* current = head;
-    if(i>=ammount){
-       throw "List Index is beyond the ammount of data"; 
+    if(i>=amount){
+       throw "List Index is beyond the amount of data"; 
     }else{
         Node<T>* current = this->head;
         for(int j = 1; j <= i ;j++){
@@ -235,8 +224,8 @@ Node<T>* LinkedList<T>::getNode(int i) const{
 }
 template <class T>
 void LinkedList<T>::del(int i){
-    if(i>=ammount){
-       throw "List Index is beyond the ammount of data"; 
+    if(i>=amount){
+       throw "List Index is beyond the amount of data"; 
     }
     Node<T>* prev;
     Node<T>* current = head;
@@ -253,6 +242,6 @@ void LinkedList<T>::del(int i){
         prev->setNext(current);
     }
     delete curr;
-    ammount--;
+    amount--;
 }
 #endif

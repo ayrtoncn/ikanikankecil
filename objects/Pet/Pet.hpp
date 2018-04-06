@@ -10,9 +10,10 @@
 #define PET_HPP
 
 #include <bits/stdc++.h>
-#include "Point.hpp"
+#include "../../data_structures/Point/Point.hpp"
 #include <iostream>
-#include "CoinGatherer"
+#include "../CoinGatherer/CoinGatherer.hpp"
+#include "../Coin/Coin.hpp"
 
 class Snail : public CoinGatherer{
 public:
@@ -23,17 +24,23 @@ public:
     Snail& operator= (const Snail& snail);
 
 // GETTER SETTER
-    int getMovementSpeed() const;
-    Point getPoint() const;
+    int getMovementSpeed();
+    Point getPoint();
+    int getOrientation();
 
+    void setOrientation(int);
+    void MoveRight();
+    void MoveLeft();
     void setMovementSpeed(int _movement_speed);
-    void setPosition(int _position);
+    void setPosition(Point _position);
 
 // METHODS
     void Move();
-    void takeCoin();
+    void takeCoin(Coin&);
 
 private:
+    int radius;
+    int orientation;
     int movement_speed;
     Point position;
 };

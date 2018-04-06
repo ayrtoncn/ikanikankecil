@@ -8,9 +8,10 @@
 
 #ifndef CoinGatherer_hpp
 #define CoinGatherer_hpp
+#include "../Coin/Coin.hpp"
 
 class CoinGatherer{
-    virtual void takeCoin() = 0;
+    virtual void takeCoin(Coin&) = 0;
 };
 
 #endif

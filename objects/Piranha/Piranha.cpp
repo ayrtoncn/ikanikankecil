@@ -62,6 +62,7 @@ void Piranha::dewaPiranha(){
     bool running=true;
     while(running){
         //lock_guard<mutex> locker(lock1);
+        srand(time(NULL));
         now = time_since_start();
         sec_since_last = now - prevtime;
         prevtime = now;

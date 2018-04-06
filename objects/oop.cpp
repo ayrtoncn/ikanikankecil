@@ -136,6 +136,10 @@ void handle_input() {
                 tappedKeys.insert(e.key.keysym.sym);
             } else if (e.type == SDL_KEYUP) {
                 pressedKeys.erase(e.key.keysym.sym);
+            }else if (e.type == SDL_MOUSEBUTTONDOWN) {
+                tappedKeys.insert(e.button.button);
+            }else if (e.type == SDL_MOUSEBUTTONUP) {
+                tappedKeys.erase(e.button.button);
             }
         }
 }

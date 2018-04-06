@@ -54,6 +54,7 @@ public:
     void setMovementSpeed(int _movement_speed);
     void setPosition(Point _position);
     void setOrientation(char _orientation);
+    void setTujuan(Point _tujuan);
 
     // METHODS
     void Move();
@@ -73,6 +74,7 @@ protected:
     int coin_period;
     int movement_speed;
     Point position;
+    Point tujuan;
     char orientation; // 'l' for left and 'r' for right
     double delay;
     time_t start;

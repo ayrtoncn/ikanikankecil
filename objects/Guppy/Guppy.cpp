@@ -1,4 +1,5 @@
 #include "Guppy.hpp"
+#include "../Fish/Fish.hpp"
 int Guppy::GUPPY_PRICE = 50;
 int Guppy::GUPPY_FULL_PERIOD = 50;
 int Guppy::GUPPY_HUNGER_PERIOD = 50;
@@ -61,8 +62,8 @@ void Guppy::dewaGuppy(){
     arah = rand()%8+1;
     time(&start);
     bool running=true;
-    while(running){
-        //lock_guard<mutex> locker(lock1);
+    while(running && name!="die"){
+        srand(time(NULL));
         now = time_since_start();
         sec_since_last = now - prevtime;
         prevtime = now;

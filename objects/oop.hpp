@@ -68,4 +68,5 @@ const std::set<SDL_Keycode>& get_tapped_keys();
 // Mengembalikan waktu dari permulaan program dalam nilai detik (bisa pecahan).
 double time_since_start();
 
+
 #endif

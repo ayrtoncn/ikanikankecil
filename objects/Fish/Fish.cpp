@@ -1,7 +1,7 @@
 #include "Fish.hpp"
 
 int Fish::fish_count = 0;
-
+mutex Fish::lock1;
 // CTOR CCTOR DTOR OPERATOR=
 Fish::Fish(string _name, int _price, int _full_period, int _hunger_period, int _coin_period, int _movement_speed) {
     name = _name;
@@ -13,6 +13,7 @@ Fish::Fish(string _name, int _price, int _full_period, int _hunger_period, int _
     movement_speed = _movement_speed;
     Point temp;
     position = temp;
+    tujuan = temp;
     orientation = 'l';
     fish_count += 1;
     time(&start);
@@ -28,6 +29,8 @@ Fish::Fish(string _name, int _price, int _full_period, int _hunger_period, int _
     coin_period = _coin_period;
     movement_speed = _movement_speed;
     position = _position;
+    Point temp;
+    tujuan = temp;
     orientation = _orientation;
     fish_count += 1;
     time(&start);
@@ -133,68 +136,87 @@ void Fish::setPosition(Point _position) {
     position = _position;
 }
 
+void Fish::setTujuan(Point _tujuan){
+    tujuan = _tujuan;
+}
+
 void Fish::setOrientation(char _orientation) {
     orientation = _orientation;
 }
 void Fish::Move(){
+    Fish::lock1.lock();
     srand(time(NULL));
-    prevtime = now;
-    if(position.getX()<=10){
-        arah = 4;
-        time(&start);
-    }else if(position.getX()>=SCREEN_WIDTH-10){
-        arah = 3;
-        time(&start);
-    }else if(position.getY()<=10){
-        arah = 2;
-        time(&start);
-    }else if(position.getY()>=SCREEN_HEIGHT-10){
-        arah = 1;
-        time(&start);
-    }
-    // cout<<movement_speed<<endl;
-    if(difftime(time(0),start)<=delay){
-        switch(arah){
-            case 1:
-                position.setY(position.getY()-movement_speed * sec_since_last);
-                break;
-            case 2:
-                position.setY(position.getY()+movement_speed * sec_since_last);
-                break;
-            case 3:
-                position.setX(position.getX()-movement_speed * sec_since_last);
-                orientation = 'l';
-                break;
-            case 4:
-                position.setX(position.getX()+movement_speed * sec_since_last);
-                orientation = 'r';
-                break;
-            case 5:
-                position.setX(position.getX()+movement_speed * sec_since_last);
-                position.setY(position.getY()+movement_speed * sec_since_last);
-                orientation = 'r';
-                break;
-            case 6:
-                position.setX(position.getX()+movement_speed * sec_since_last);
-                position.setY(position.getY()-movement_speed * sec_since_last);
-                orientation = 'r';
-                break;
-            case 7:
-                position.setX(position.getX()-movement_speed * sec_since_last);
-                position.setY(position.getY()+movement_speed * sec_since_last);
-                orientation = 'l';
-                break;
-            case 8:
-                position.setX(position.getX()-movement_speed * sec_since_last);
-                position.setY(position.getY()-movement_speed * sec_since_last);
-                orientation = 'l';
-                break;
+    Point temp;
+    if(tujuan.getX()==temp.getX()&& tujuan.getY()==temp.getY()){
+
+        if(position.getX()<=10){
+            arah = 4;
+            time(&start);
+        }else if(position.getX()>=SCREEN_WIDTH-10){
+            arah = 3;
+            time(&start);
+        }else if(position.getY()<=10){
+            arah = 2;
+            time(&start);
+        }else if(position.getY()>=SCREEN_HEIGHT-10){
+            arah = 1;
+            time(&start);
+        }
+        // cout<<movement_speed<<endl;
+        if(difftime(time(0),start)<=delay){
+            switch(arah){
+                case 1:
+                    position.setY(position.getY()-movement_speed * sec_since_last);
+                    break;
+                case 2:
+                    position.setY(position.getY()+movement_speed * sec_since_last);
+                    break;
+                case 3:
+                    position.setX(position.getX()-movement_speed * sec_since_last);
+                    orientation = 'l';
+                    break;
+                case 4:
+                    position.setX(position.getX()+movement_speed * sec_since_last);
+                    orientation = 'r';
+                    break;
+                case 5:
+                    position.setX(position.getX()+movement_speed * sec_since_last);
+                    position.setY(position.getY()+movement_speed * sec_since_last);
+                    orientation = 'r';
+                    break;
+                case 6:
+                    position.setX(position.getX()+movement_speed * sec_since_last);
+                    position.setY(position.getY()-movement_speed * sec_since_last);
+                    orientation = 'r';
+                    break;
+                case 7:
+                    position.setX(position.getX()-movement_speed * sec_since_last);
+                    position.setY(position.getY()+movement_speed * sec_since_last);
+                    orientation = 'l';
+                    break;
+                case 8:
+                    position.setX(position.getX()-movement_speed * sec_since_last);
+                    position.setY(position.getY()-movement_speed * sec_since_last);
+                    orientation = 'l';
+                    break;
+            }
+        }else{
+            time(&start);
+            delay= rand()%4+1;
+            arah = rand()%8+1;
         }
     }else{
-        time(&start);
-        delay= rand()%4+1;
-        arah = rand()%8+1;
+        double a;
+        a = atan2(tujuan.getY()-position.getY(),tujuan.getX()-position.getX());
+        if((a<=3.14 && a>=(3.14/2) )|| (a>=-3.14 && a<=-(3.14/2))){
+            orientation = 'l';
+        }else{
+            orientation = 'r';
+        }
+        position.setX(position.getX()+movement_speed * sec_since_last*cos(a));
+        position.setY(position.getY()+movement_speed * sec_since_last*sin(a));
     }
+    Fish::lock1.unlock();
     // cout<<"Y"<<position.getX()<<endl;
     // cout<<"X"<<position.getY()<<endl;
 
@@ -207,6 +229,7 @@ void Fish::dewaIkan(){
     bool running=true;
     while(running){
         //lock_guard<mutex> locker(lock1);
+        srand(time(NULL));
         now = time_since_start();
         sec_since_last = now - prevtime;
         prevtime = now;

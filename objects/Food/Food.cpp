@@ -10,13 +10,19 @@
 // CTOR CCTOR DTOR
 Food::Food() {
     name = "";
-    movement_speed = 0;
-    position.setX(0);
+    movement_speed = 50;
+    position.setX(300);
+    position.setY(0);
+}
+Food::Food(double x) {
+    name = "";
+    movement_speed = 50;
+    position.setX(x);
     position.setY(0);
 }
 
 Food::Food(const Food& food) {
-    strcpy(name, food.name);
+    //strcpy(name, food.name);
     movement_speed = food.movement_speed;
     position.setX(food.position.getX());
     position.setY(food.position.getY());
@@ -29,8 +35,8 @@ Food::~Food() {
     position.setY(0);
 }
 
-Food::Food& operator=(const Food& food) {
-    strcpy(this->name, food.name);
+Food& Food::operator=(const Food& food) {
+    //strcpy(this->name, food.name);
     this->movement_speed = food.movement_speed;
     this->position.setX(food.position.getX());
     this->position.setY(food.position.getY());
@@ -50,9 +56,9 @@ Point Food::getPosition() const {
     return position;
 }
 
-int Food::getRadius() const {
-    return radius;
-}
+// int Food::getRadius() const {
+//     return radius;
+// }
 
 void Food::setName(string _name) {
     name = _name;
@@ -66,6 +72,22 @@ void Food::setPosition(Point _position) {
     position = _position;
 }
 
-void Food::setRadius(int _radius) {
-    radius = _radius;
+// void Food::setRadius(int _radius) {
+//     radius = _radius;
+// }
+
+void Food::executeFood(){
+    Food_prevtime = time_since_start();
+    bool running =true;
+    while(running){
+        usleep(100);
+        Food_now = time_since_start();
+        Food_sec_since_last = Food_now - Food_prevtime;
+        Food_prevtime = Food_now;
+        position.setY(position.getY()+movement_speed* Food_sec_since_last);
+        if(position.getY()>=SCREEN_HEIGHT-20){
+            running = false;
+        }
+    }
+
 }

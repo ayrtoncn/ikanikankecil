@@ -2,9 +2,11 @@
 #define AQUARIUM_HPP
 
 #include "LinkedList.hpp"
-#include "Fish.hpp"
-#include "Coin.hpp"
-#include "Food.hpp"
+#include "../Fish/Fish.hpp"
+#include "../Guppy/Guppy.hpp"
+#include "../Piranha/Piranha.hpp"
+#include "../Coin/Coin.hpp"
+#include "../Food/Food.hpp"
 
 using namespace std;
 
@@ -15,11 +17,11 @@ public:
     Aquarium(int _width, int _height);
     Aquarium(const Aquarium& aquarium);
 
-    // GETTER SETTER
-    
+    // DEWA AQUARIUM 
+    void runAquarium();
 
     // METHODS
-    friend void AddFishFromFish(const Fish& _fish);
+    friend void AddFishFromFish(Aquarium& Aq, const Fish& _fish);
     friend void AddCoinFromCoins(const Coin &coin);
     friend void AddFoodfromFoods(const Food &food);
 
@@ -32,7 +34,8 @@ public:
   private:
     int width;
     int height;
-    LinkedList<Fish*> fish;
+    LinkedList<Guppy> guppy;
+    LinkedList<Piranha> piranha;
     LinkedList<Coin> coins;
     LinkedList<Food> foods;
     Snail snail;

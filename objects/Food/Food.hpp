@@ -10,13 +10,18 @@
 #define FOOD_HPP
 
 #include <bits/stdc++.h>
-#include "Point.hpp"
+#include "../../data_structures/Point/Point.hpp"
 #include <iostream>
+#include "../oop.hpp"
+#include <unistd.h>
+
+using namespace std;
 
 class Food {
 public:
     // CTOR CCTOR DTOR
     Food();
+    Food(double x);
     Food(const Food& food);
     ~Food();
     Food& operator=(const Food& food);
@@ -31,12 +36,16 @@ public:
     void setPosition(Point _position);
 
     // METHODS
-
+     //COntroller
+     void executeFood();
 
 private:
     string name;
     int movement_speed;
     Point position;
+    double Food_now;
+    double Food_prevtime;
+    double Food_sec_since_last;
 };
 
 #endif

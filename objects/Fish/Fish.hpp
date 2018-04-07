@@ -70,7 +70,7 @@ protected:
     int price;
     int full_period; // periode kenyang
     bool is_hungry;
-    time_t hunger_period; // periode butuh makan
+    int hunger_period; // periode butuh makan
     int coin_period;
     int movement_speed;
     Point position;

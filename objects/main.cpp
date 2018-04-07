@@ -33,9 +33,18 @@ void InteractionChecker(Aquarium* Aq){
         case SDL_BUTTON_LEFT:
             // cout<<num_food<<endl;
             Aq->input = 'c';
+            //percobaan gerakin siput ke arah mouse click
+            int x,y;
+            SDL_GetMouseState(&x,&y);
+            Point temp;
+            temp.setX(x);
+            temp.setY(y);
+            Aq->snail.setTujuan(temp);
             break;
         }
     }
+    
+
     if(Aq->input == 'g'){
         srand(time(NULL));
         Aq->num_fish++;

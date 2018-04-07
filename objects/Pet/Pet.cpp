@@ -8,12 +8,11 @@
 
 #include "Pet.hpp"
 #include "../Coin/Coin.hpp"
-
 // CTOR CCTOR DTOR
 Snail::Snail() {
-    movement_speed = 0;
-    position.setX(0);
-    position.setY(1280);
+    movement_speed = 20;
+    position.setX(50);
+    position.setY(SCREEN_HEIGHT-40);
 }
 
 Snail::Snail(const Snail& snail) {
@@ -38,7 +37,7 @@ int Snail::getMovementSpeed(){
     return this->movement_speed;
 }
 
-Point Snail::getPoint(){
+Point Snail::getPosition(){
     return this->position;
 }
 
@@ -59,6 +58,11 @@ void Snail::setOrientation(int _orientation) {
     orientation = _orientation;
 }
 
+void Snail::setTujuan(Point _tujuan){
+    tujuan.setX(_tujuan.getX());
+    tujuan.setY(_tujuan.getY());
+}
+
 // METHODS
 void Snail::MoveRight() {
     position.setX(position.getX()+1);
@@ -70,16 +74,44 @@ void Snail::MoveLeft() {
     orientation = 1;
 }
 
-void Snail::takeCoin(Coin& coin) {
-    if ((position.getX()+radius <= coin.getPosition().getX()-coin.getRadius()) or (position.getX()-radius >= coin.getPosition().getX()+coin.getRadius()) or (position.getY()-radius >= coin.getPosition().getY()+coin.getRadius())) {
-        while ((position.getX()+radius <= coin.getPosition().getX()-coin.getRadius()) or (position.getX()-radius >= coin.getPosition().getX()+coin.getRadius())) {
-            if (position.getX()+radius <= coin.getPosition().getX()-coin.getRadius()) {
-                MoveRight();
-            } else if (position.getX()-radius >= coin.getPosition().getX()+coin.getRadius()) {
-                MoveLeft();
-            }
-        }
-        while (position.getY()-radius >= coin.getPosition().getY()+coin.getRadius()); // wait until coin falls down
+void Snail::Move(){
+    double a;
+    a = atan2(0,tujuan.getX()-position.getX());
+    if((a<=3.14 && a>=(3.14/2) )|| (a>=-3.14 && a<=-(3.14/2))){
+        orientation = 'l';
+    }else{
+        orientation = 'r';
     }
-    coin.~Coin();
+    position.setX(position.getX()+movement_speed * Snail_sec_since_last*cos(a));
+}
+
+void Snail::takeCoin(Coin& coin) {
+    // if ((position.getX()+20 <= coin.getPosition().getX()) && (position.getX()-20 >= coin.getPosition().getX()) && (position.getY()-20 >= coin.getPosition().getY()) && ( position.getY() + 20 <= coin.getPosition().getY())) {
+    //     while ((position.getX()+radius <= coin.getPosition().getX()-coin.getRadius()) or (position.getX()-radius >= coin.getPosition().getX()+coin.getRadius())) {
+    //         if (position.getX()+radius <= coin.getPosition().getX()-coin.getRadius()) {
+    //             MoveRight();
+    //         } else if (position.getX()-radius >= coin.getPosition().getX()+coin.getRadius()) {
+    //             MoveLeft();
+    //         }
+    //     }
+    //     while (position.getY()-radius >= coin.getPosition().getY()+coin.getRadius()); // wait until coin falls down
+    // }
+    //coin.~Coin();
+}
+
+void Snail::executeSnail(){
+    Snail_prevtime = time_since_start();
+    Point temp;
+    tujuan = temp;
+    bool running =true;
+    while(running){
+        usleep(100);
+        Snail_now = time_since_start();
+        Snail_sec_since_last = Snail_now - Snail_prevtime;
+        Snail_prevtime = Snail_now;
+        //cout<<tujuan.getX()<<" "<< tujuan.getY()<< endl;
+        if(tujuan.getX()!=temp.getX() && tujuan.getY()!=temp.getY()){
+            Move();
+        }
+    }
 }

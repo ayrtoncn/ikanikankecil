@@ -14,6 +14,8 @@
 #include <iostream>
 #include "../CoinGatherer/CoinGatherer.hpp"
 #include "../Coin/Coin.hpp"
+#include "../oop.hpp"
+#include <unistd.h>
 
 class Snail : public CoinGatherer{
 public:
@@ -25,9 +27,10 @@ public:
 
 // GETTER SETTER
     int getMovementSpeed();
-    Point getPoint();
+    Point getPosition();
     int getOrientation();
 
+    void setTujuan(Point);
     void setOrientation(int);
     void MoveRight();
     void MoveLeft();
@@ -38,11 +41,17 @@ public:
     void Move();
     void takeCoin(Coin&);
 
+//CONTROLER
+    void executeSnail();
 private:
-    int radius;
+    //int radius;
     int orientation;
     int movement_speed;
     Point position;
+    Point tujuan;
+    double Snail_now;
+    double Snail_prevtime;
+    double Snail_sec_since_last;
 };
 
 #endif

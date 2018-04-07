@@ -62,7 +62,10 @@ void Aquarium::runAquarium(){
     num_guppy = -1;
     num_piran =-1;
     num_food = -1;
-    num_object = -1;
+    //object index 0 di buat untuk snail
+    num_object = 0;
+    //insialisasi snail
+    object[num_object] = thread(&Snail::executeSnail,&snail);
 	bool running = true;
 	while(running){
 		InteractionChecker(this);
@@ -86,7 +89,13 @@ void Aquarium::runAquarium(){
         }     
         for(int i=0;i<=num_food;i++){
             draw_image("pelet.png",foods[i]->getPosition().getX(),foods[i]->getPosition().getY());
-        }  
+        }
+        if(snail.getOrientation() =='l'){
+            draw_image("snailkiri.png", snail.getPosition().getX(), snail.getPosition().getY());
+        }else{
+            draw_image("snailkanan.png", snail.getPosition().getX(), snail.getPosition().getY());
+        }
+          
         if(input=='x'){
             running=false;
             input = '0';

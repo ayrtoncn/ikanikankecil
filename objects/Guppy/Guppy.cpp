@@ -2,7 +2,7 @@
 #include "../Fish/Fish.hpp"
 int Guppy::GUPPY_PRICE = 50;
 int Guppy::GUPPY_FULL_PERIOD = 50;
-int Guppy::GUPPY_HUNGER_PERIOD = 50;
+time_t Guppy::GUPPY_HUNGER_PERIOD = time(&);
 int Guppy::GUPPY_COIN_PERIOD = 50;
 int Guppy::GUPPY_MOVEMENT_SPEED = 50;
 int Guppy::guppy_count =0;

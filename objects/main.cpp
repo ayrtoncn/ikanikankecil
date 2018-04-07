@@ -65,7 +65,9 @@ void InteractionChecker(Aquarium* Aq){
         Aq->piranha.add(new Piranha(temp,'l'));
         Aq->ikan[Aq->num_fish] = thread(&Piranha::dewaPiranha,Aq->piranha[Aq->num_piran]);
         Aq->input = '0';
-    }else if(Aq->input =='c'){
+        //harga makanan belum dijadikan static
+    }else if(Aq->input =='c'&& Aq->coin -5 >=0){
+        Aq->coin -=5;
         Aq->num_food++;
         Aq->num_object++;
         int x,y;

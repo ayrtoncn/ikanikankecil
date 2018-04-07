@@ -62,6 +62,7 @@ void Aquarium::runAquarium(){
 	init();
 	num_fish = -1;
     num_guppy = -1;
+    num_coin = -1;
     num_piran =-1;
     num_food = -1;
     //object index 0 di buat untuk snail
@@ -108,6 +109,13 @@ void Aquarium::runAquarium(){
         for(int i=0;i<=num_food;i++){
             if(foods[i]->getName()!="die"){
                 draw_image("pelet.png",foods[i]->getPosition().getX(),foods[i]->getPosition().getY());
+            }
+        }
+        for (int i = 0; i <= num_coin; i++)
+        {
+            if (coins[i]->getValue() != 0)
+            {
+                draw_image("coin.png", coins[i]->getPosition().getX(), coins[i]->getPosition().getY());
             }
         }
         if(snail.getOrientation() =='l'){

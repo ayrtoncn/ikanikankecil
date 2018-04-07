@@ -37,6 +37,7 @@ public:
     // GETTER SETTER
     static int getFishCount();
     string getName() const;
+    int getPrice() const;
     int getFullPeriod() const;
     bool getIsHungry() const;
     int getHungerPeriod() const;
@@ -44,6 +45,7 @@ public:
     int getMovementSpeed() const;
     Point getPosition() const;
     char getOrientation() const;
+    bool getDropCoin() const;
 
     static void setFishCount(int _fish_count);
     void setName(string _name);
@@ -53,6 +55,7 @@ public:
     void setCoinPeriod(int _coin_period);
     void setMovementSpeed(int _movement_speed);
     void setPosition(Point _position);
+    void setDropCoin(bool _dropcoins);
     void setOrientation(char _orientation);
     void setTujuan(Point _tujuan);
 
@@ -82,6 +85,7 @@ protected:
     double now;
     double prevtime;
     double sec_since_last;
+    bool dropcoins;
 };
 
 #endif

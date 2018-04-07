@@ -12,6 +12,8 @@
 #include <bits/stdc++.h>
 #include "../../data_structures/Point/Point.hpp"
 #include <iostream>
+#include "../oop.hpp"
+#include <unistd.h>
 
 class Coin {
 public:
@@ -34,13 +36,16 @@ public:
     void setRadius(int);
 
     // METHODS
-    
+    void executeCoin();
 
 private:
     int value;
     int movement_speed;
     Point position;
     int radius;
+    double Coin_now;
+    double Coin_prevtime;
+    double Coin_sec_since_last;
 };
 
 #endif

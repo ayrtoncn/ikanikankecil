@@ -135,6 +135,12 @@ void InteractionChecker(Aquarium* Aq){
                     Aq->guppy[gup]->setPosition(t);
                     Aq->guppy[gup]->setName("die");
                     Aq->piranha[pir]->Eat();
+
+                    Aq->num_coin++;
+                    Aq->num_object++;
+                    Aq->coins.add(new Coin(Aq->guppy[gup]->getPrice() * (Aq->guppy[gup]->getGrowthLevel() + 1), 20, Aq->piranha[pir]->getPosition()));
+                    Aq->object[Aq->num_object] = thread(&Coin::executeCoin, Aq->coins[Aq->num_coin]);
+
                     Aq->guppy.del(gup);
                     Aq->num_guppy = Aq->num_guppy - 1;
                 }
@@ -164,8 +170,64 @@ void InteractionChecker(Aquarium* Aq){
         }
     }   
     //interaksi ikan ngeluarin uang
+    //Guppy
+    for(int gup = 0; gup <= Aq->num_guppy; gup++){
+        if(Aq->guppy[gup]->getDropCoin()){
+            if(Aq->guppy[gup]->getGrowthLevel()==0){
+                Aq->num_coin++;
+                Aq->num_object++;
+                Aq->coins.add(new Coin(10, 20, Aq->guppy[gup]->getPosition()));
+                Aq->object[Aq->num_object] = thread(&Coin::executeCoin, Aq->coins[Aq->num_coin]);
+            } else if(Aq->guppy[gup]->getGrowthLevel()==1){
+                Aq->num_coin++;
+                Aq->num_object++;
+                Aq->coins.add(new Coin(20, 20, Aq->guppy[gup]->getPosition()));
+                Aq->object[Aq->num_object] = thread(&Coin::executeCoin, Aq->coins[Aq->num_coin]);
+            } else if(Aq->guppy[gup]->getGrowthLevel()==2){
+                Aq->num_coin++;
+                Aq->num_object++;
+                Aq->coins.add(new Coin(30, 20, Aq->guppy[gup]->getPosition()));
+                Aq->object[Aq->num_object] = thread(&Coin::executeCoin, Aq->coins[Aq->num_coin]);
+            }
+        }
+    }
+
+    //interaksi siput mencari uang
+    if (Aq->num_coin > 0)
+    {
+        double min = 999999;
+        Point pmin;
+        for (int i = 0; i <= Aq->num_coin; i++)
+        {
+            double temp = sqrt(pow(Aq->snail.getPosition().getX() - Aq->coins[i]->getPosition().getX(), 2) + pow(Aq->snail.getPosition().getY() - Aq->coins[i]->getPosition().getY(), 2));
+            if (min > temp)
+            {
+                min = temp;
+                pmin.setX(Aq->coins[i]->getPosition().getX());
+                pmin.setY(Aq->coins[i]->getPosition().getY());
+            }
+        }
+        //cout<<pmin.getX()<<" "<<pmin.getY()<<endl;
+        Aq->snail.setTujuan(pmin);
+    }
 
     //interaksi siput ngambil uang
+    for (int i = 0; i <= Aq->num_coin; i++)
+    {
+        if (Aq->coins[i]->getPosition().getX() <= Aq->snail.getPosition().getX() + 20 
+        && Aq->coins[i]->getPosition().getX() >= Aq->snail.getPosition().getX() - 20 
+        && Aq->coins[i]->getPosition().getY() >= Aq->snail.getPosition().getY() - 20)
+        {
+            Point t;
+            t.setX(-100);
+            t.setY(-100);
+            Aq->coin += Aq->coins[i]->getValue();
+            Aq->coins[i]->~Coin();
+            Aq->coins.del(i);
+            Aq->num_coin--;
+        }
+    }
+
     Aq->unlockAquarium();
 }
 

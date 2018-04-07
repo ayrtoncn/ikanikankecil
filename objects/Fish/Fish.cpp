@@ -16,6 +16,7 @@ Fish::Fish(string _name, int _price, int _full_period, int _hunger_period, int _
     tujuan = temp;
     orientation = 'l';
     fish_count += 1;
+    dropcoins = false;
     time(&start);
     delay= rand()%4+1;
 }
@@ -33,6 +34,7 @@ Fish::Fish(string _name, int _price, int _full_period, int _hunger_period, int _
     tujuan = temp;
     orientation = _orientation;
     fish_count += 1;
+    dropcoins = false;
     time(&start);
     delay= rand()%4+1;
 }
@@ -45,6 +47,7 @@ Fish::Fish(const Fish& fish) {
     movement_speed = fish.movement_speed;
     position = fish.position;
     orientation = fish.orientation;
+    dropcoins = fish.dropcoins;
     fish_count += 1;
 }
 
@@ -80,6 +83,10 @@ int Fish::getFullPeriod() const {
     return full_period;
 }
 
+int Fish::getPrice() const {
+    return price;
+}
+
 bool Fish::getIsHungry() const {
     return is_hungry;
 }
@@ -102,6 +109,10 @@ Point Fish::getPosition() const {
 
 char Fish::getOrientation() const {
     return orientation;
+}
+
+bool Fish::getDropCoin() const {
+    return dropcoins;
 }
 
 void Fish::setFishCount(int _fish_count) {
@@ -134,6 +145,10 @@ void Fish::setMovementSpeed(int _movement_speed) {
 
 void Fish::setPosition(Point _position) {
     position = _position;
+}
+
+void Fish::setDropCoin(bool _dropcoins) {
+    dropcoins = _dropcoins;
 }
 
 void Fish::setTujuan(Point _tujuan){

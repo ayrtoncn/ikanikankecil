@@ -75,3 +75,20 @@ void Coin::setPosition(Point _position) {
 void Coin::setRadius(int _radius) {
     radius = _radius;
 }
+
+void Coin::executeCoin() {
+    Coin_prevtime = time_since_start();
+    bool running = true;
+    while (running)
+    {
+        usleep(100);
+        Coin_now = time_since_start();
+        Coin_sec_since_last = Coin_now - Coin_prevtime;
+        Coin_prevtime = Coin_now;
+        if (position.getY() <= SCREEN_HEIGHT-40) {
+            position.setY(position.getY() + movement_speed * Coin_sec_since_last);
+        } else {
+            position.setY(SCREEN_HEIGHT-40);
+        }
+    }
+}

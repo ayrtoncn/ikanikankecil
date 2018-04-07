@@ -75,6 +75,9 @@ void InteractionChecker(Aquarium* Aq){
         temp.setY(y);
         Aq->input = '0';
     }
+    //interaksi piranha mencari guppy
+    
+
     //Interaksi ikan mencari makanan
     for (int gup = 0;gup<=Aq->num_guppy;gup++){
         if(Aq->guppy[gup]->getIsHungry()){
@@ -104,6 +107,7 @@ void InteractionChecker(Aquarium* Aq){
                 t.setX(-100);
                 t.setY(-100);
                 //cout<<"MATIIIIIIIIIIIIIIIIIIIIII"<<endl;
+                Aq->guppy[gup]->setIsHungry(false);
                 Aq->guppy[gup]->setPosition(t);
                 Aq->guppy[gup]->setName("die");
             }

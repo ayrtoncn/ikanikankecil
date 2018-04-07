@@ -54,7 +54,10 @@ void Guppy::DropCoin() {
 }
 
 void Guppy::Eat() {
-    GUPPY_HUNGER_PERIOD=15;
+    hunger_period=15;
+    Point P;
+    tujuan = P;
+    is_hungry = false;
 }
 void Guppy::dewaGuppy(){
     prevtime = time_since_start();
@@ -66,13 +69,13 @@ void Guppy::dewaGuppy(){
         srand(time(NULL));
         now = time_since_start();
         sec_since_last = now - prevtime;
-        GUPPY_HUNGER_PERIOD-=sec_since_last;
+        hunger_period-=sec_since_last;
         //cout<<GUPPY_HUNGER_PERIOD<<endl;
         prevtime = now;
-        if(GUPPY_HUNGER_PERIOD<=10 && GUPPY_HUNGER_PERIOD>=0){
+        if(hunger_period<=10 && hunger_period>=0){
             is_hungry = true;
             //cout<<tujuan.getX()<<" "<<tujuan.getY()<<endl;
-        }else if(GUPPY_HUNGER_PERIOD<0){
+        }else if(hunger_period<0){
             name = "die";
         }
         Move();

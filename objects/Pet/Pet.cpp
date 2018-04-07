@@ -77,10 +77,11 @@ void Snail::MoveLeft() {
 void Snail::Move(){
     double a;
     a = atan2(0,tujuan.getX()-position.getX());
-    if((a<=3.14 && a>=(3.14/2) )|| (a>=-3.14 && a<=-(3.14/2))){
-        orientation = 'l';
-    }else{
+    //cout<<a<<endl;
+    if(a==0){
         orientation = 'r';
+    }else{
+        orientation = 'l';
     }
     position.setX(position.getX()+movement_speed * Snail_sec_since_last*cos(a));
 }

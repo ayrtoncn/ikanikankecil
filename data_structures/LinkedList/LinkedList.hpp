@@ -233,6 +233,7 @@ void LinkedList<T>::del(int i){
     while(j != i){ 
         prev = current;
         current = current->getNext();
+        j++;
     }
     Node<T>* curr = current;
     if(curr == head){

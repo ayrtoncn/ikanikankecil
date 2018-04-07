@@ -133,6 +133,7 @@ void InteractionChecker(Aquarium* Aq){
                     Aq->guppy[gup]->setPosition(t);
                     Aq->guppy[gup]->setName("die");
                     Aq->piranha[pir]->Eat();
+                    Aq->guppy.del(gup);
                 }
             }
         }
@@ -153,6 +154,7 @@ void InteractionChecker(Aquarium* Aq){
                     //cout<<"MATIIIIIIIIIIIIIIIIIIIIII"<<endl;
                     Aq->foods[i]->setPosition(t);
                     Aq->foods[i]->setName("die");
+                    Aq->food.del(i);
                 }
             }
         }

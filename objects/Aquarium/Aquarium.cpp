@@ -88,7 +88,9 @@ void Aquarium::runAquarium(){
             }
         }     
         for(int i=0;i<=num_food;i++){
-            draw_image("pelet.png",foods[i]->getPosition().getX(),foods[i]->getPosition().getY());
+            if(foods[i]->getName()!="die"){
+                draw_image("pelet.png",foods[i]->getPosition().getX(),foods[i]->getPosition().getY());
+            }
         }
         if(snail.getOrientation() =='l'){
             draw_image("snailkiri.png", snail.getPosition().getX(), snail.getPosition().getY());

@@ -10,7 +10,7 @@
 // CTOR CCTOR DTOR
 Food::Food() {
     name = "";
-    movement_speed = 50;
+    movement_speed = 20;
     position.setX(300);
     position.setY(0);
 }

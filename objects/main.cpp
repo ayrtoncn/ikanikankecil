@@ -75,9 +75,27 @@ void InteractionChecker(Aquarium* Aq){
         temp.setY(y);
         Aq->input = '0';
     }
+    //Interaksi ikan mencari makanan
+    for (int gup = 0;gup<=Aq->num_guppy;gup++){
+        if(Aq->guppy[gup]->getIsHungry()){
+            double min=999999;
+            Point pmin;
+            for(int i =0;i<=Aq->num_food;i++){
+                double temp = sqrt(pow(Aq->guppy[gup]->getPosition().getX()-Aq->foods[i]->getPosition().getX(),2)+pow(Aq->guppy[gup]->getPosition().getY()-Aq->foods[i]->getPosition().getY(),2));
+                if(min>temp){
+                    min = temp;
+                    pmin.setX(Aq->foods[i]->getPosition().getX());
+                    pmin.setY(Aq->foods[i]->getPosition().getY());
+
+                }
+            }
+            //cout<<pmin.getX()<<" "<<pmin.getY()<<endl;
+            Aq->guppy[gup]->setTujuan(pmin);
+        }
+    }
     //Interaksi ikan piranha makan guppy
-    for(int pir = 0; pir < Aq->num_piran; pir++){
-        for(int gup = 0; gup < Aq->num_guppy; gup++){
+    for(int pir = 0; pir <= Aq->num_piran; pir++){
+        for(int gup = 0; gup <= Aq->num_guppy; gup++){
             if(Aq->guppy[gup]->getPosition().getX() <= Aq->piranha[pir]->getPosition().getX()+50 
             && Aq->guppy[gup]->getPosition().getX() >= Aq->piranha[pir]->getPosition().getX()-60 
             && Aq->guppy[gup]->getPosition().getY() <= Aq->piranha[pir]->getPosition().getY()+50 
@@ -93,7 +111,22 @@ void InteractionChecker(Aquarium* Aq){
     }           
 
     //interaksi ikan makan makanan
-
+    for(int gup = 0; gup <= Aq->num_guppy; gup++){
+        for(int i = 0; i <= Aq->num_food; i++){
+            if(Aq->foods[i]->getPosition().getX() <= Aq->guppy[gup]->getPosition().getX()+50 
+            && Aq->foods[i]->getPosition().getX() >= Aq->guppy[gup]->getPosition().getX()-60 
+            && Aq->foods[i]->getPosition().getY() <= Aq->guppy[gup]->getPosition().getY()+50 
+            && Aq->foods[i]->getPosition().getY() >= Aq->guppy[gup]->getPosition().getY()-50){
+                Point t;
+                t.setX(-100);
+                t.setY(-100);
+                Aq->guppy[gup]->Eat();
+                //cout<<"MATIIIIIIIIIIIIIIIIIIIIII"<<endl;
+                Aq->foods[i]->setPosition(t);
+                Aq->foods[i]->setName("die");
+            }
+        }
+    }   
     //interaksi ikan ngeluarin uang
 
     //interaksi siput ngambil uang

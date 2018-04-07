@@ -2,9 +2,9 @@
 #include "../Fish/Fish.hpp"
 int Guppy::GUPPY_PRICE = 50;
 int Guppy::GUPPY_FULL_PERIOD = 50;
-int Guppy::GUPPY_HUNGER_PERIOD = 50;
+double Guppy::GUPPY_HUNGER_PERIOD = 15;
 int Guppy::GUPPY_COIN_PERIOD = 50;
-int Guppy::GUPPY_MOVEMENT_SPEED = 50;
+int Guppy::GUPPY_MOVEMENT_SPEED = 100;
 int Guppy::guppy_count =0;
 // CTOR CCTOR DTOR
 Guppy::Guppy():Fish("Guppy" + (guppy_count + 1), GUPPY_PRICE, GUPPY_FULL_PERIOD, GUPPY_HUNGER_PERIOD, GUPPY_COIN_PERIOD, GUPPY_MOVEMENT_SPEED){
@@ -54,7 +54,7 @@ void Guppy::DropCoin() {
 }
 
 void Guppy::Eat() {
-
+    GUPPY_HUNGER_PERIOD=15;
 }
 void Guppy::dewaGuppy(){
     prevtime = time_since_start();
@@ -66,7 +66,15 @@ void Guppy::dewaGuppy(){
         srand(time(NULL));
         now = time_since_start();
         sec_since_last = now - prevtime;
+        GUPPY_HUNGER_PERIOD-=sec_since_last;
+        //cout<<GUPPY_HUNGER_PERIOD<<endl;
         prevtime = now;
+        if(GUPPY_HUNGER_PERIOD<=10 && GUPPY_HUNGER_PERIOD>=0){
+            is_hungry = true;
+            //cout<<tujuan.getX()<<" "<<tujuan.getY()<<endl;
+        }else if(GUPPY_HUNGER_PERIOD<0){
+            name = "die";
+        }
         Move();
         // cout<<"Y"<<position.getX()<<endl;
         // cout<<"X"<<position.getY()<<endl;

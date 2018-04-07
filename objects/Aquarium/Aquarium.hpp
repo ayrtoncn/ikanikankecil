@@ -58,6 +58,7 @@ public:
     int num_piran;
     int num_food;
     int num_object;
+    int coin;
     char input;
     LinkedList<Guppy*> guppy;
     LinkedList<Piranha*> piranha;

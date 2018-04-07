@@ -1,18 +1,20 @@
 #include "Guppy.hpp"
 #include "../Fish/Fish.hpp"
-int Guppy::GUPPY_PRICE = 50;
+int Guppy::GUPPY_PRICE = 10;
 int Guppy::GUPPY_FULL_PERIOD = 50;
 double Guppy::GUPPY_HUNGER_PERIOD = 15;
 int Guppy::GUPPY_COIN_PERIOD = 50;
-int Guppy::GUPPY_MOVEMENT_SPEED = 100;
+int Guppy::GUPPY_MOVEMENT_SPEED = 80;
 int Guppy::guppy_count =0;
 // CTOR CCTOR DTOR
 Guppy::Guppy():Fish("Guppy" + (guppy_count + 1), GUPPY_PRICE, GUPPY_FULL_PERIOD, GUPPY_HUNGER_PERIOD, GUPPY_COIN_PERIOD, GUPPY_MOVEMENT_SPEED){
     guppy_count++;
+    growth_level = 0;
 }
 
 Guppy::Guppy(Point position, char orientation): Fish("Guppy" + (guppy_count + 1), GUPPY_PRICE, GUPPY_FULL_PERIOD, GUPPY_HUNGER_PERIOD, GUPPY_COIN_PERIOD, GUPPY_MOVEMENT_SPEED, position, orientation) {
     guppy_count++;
+    growth_level = 0;
 }
 
 Guppy::Guppy(const Guppy &guppy):Fish("Guppy" + (guppy_count + 1), GUPPY_PRICE, GUPPY_FULL_PERIOD, GUPPY_HUNGER_PERIOD, GUPPY_COIN_PERIOD, GUPPY_MOVEMENT_SPEED){
@@ -58,6 +60,7 @@ void Guppy::Eat() {
     Point P;
     tujuan = P;
     is_hungry = false;
+    growth_level++;
 }
 void Guppy::dewaGuppy(){
     prevtime = time_since_start();
@@ -82,4 +85,6 @@ void Guppy::dewaGuppy(){
         // cout<<"Y"<<position.getX()<<endl;
         // cout<<"X"<<position.getY()<<endl;
     }
+    position.setX(-100);
+    position.setY(-100);
 }

@@ -20,8 +20,9 @@ Aquarium::Aquarium(){
     coins = LinkedList<Coin*>();
     foods = LinkedList<Food*>();
     snail = Snail();
-    height = 720;
-    width = 1280;
+    coin = 100;
+    height = SCREEN_HEIGHT;
+    width = SCREEN_WIDTH;
 }
 
 Aquarium::~Aquarium(){
@@ -34,8 +35,9 @@ Aquarium::Aquarium(int _width, int _height){
     coins = LinkedList<Coin*>();
     foods = LinkedList<Food*>();
     snail = Snail();
-    height = 720;
-    width = 1280;
+    coin = 100;
+    height = SCREEN_HEIGHT;
+    width = SCREEN_WIDTH;
 }
 
 Aquarium& Aquarium::operator=(const Aquarium& aq){
@@ -44,8 +46,8 @@ Aquarium& Aquarium::operator=(const Aquarium& aq){
     coins = LinkedList<Coin*>();
     foods = LinkedList<Food*>();
     snail = Snail();
-    height = 720;
-    width = 1280;	
+    height = SCREEN_HEIGHT;
+    width = SCREEN_WIDTH;
 }
 
 void Aquarium::unlockAquarium(){
@@ -74,17 +76,33 @@ void Aquarium::runAquarium(){
         for(int i = 0; i <= num_guppy ; i++){
             if(guppy[i]->getName()!="die"){
                 if(guppy[i]->getOrientation() =='l'){
-                    draw_image("ikankiri.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                    if(guppy[i]->getGrowthLevel()<=3){
+                        draw_image("ikankiri1.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                    }else if(guppy[i]->getGrowthLevel()<=6){
+                        draw_image("ikankiri2.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                    }else{
+                        draw_image("ikankiri3.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                    }
+                    
                 }else{
-                    draw_image("ikankanan.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                    if(guppy[i]->getGrowthLevel()<=3){
+                        draw_image("ikankanan1.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                    }else if(guppy[i]->getGrowthLevel()<=6){
+                        draw_image("ikankanan2.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                    }else{
+                        draw_image("ikankanan3.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                    }
+                    
                 }
             }
         }
         for(int i = 0; i <= num_piran ; i++){
-            if(piranha[i]->getOrientation() =='l'){
-                draw_image("piranhakiri.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
-            }else{
-                draw_image("piranhakanan.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
+            if(piranha[i]->getName()!="die"){
+                if(piranha[i]->getOrientation() =='l'){
+                    draw_image("piranhakiri.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
+                }else{
+                    draw_image("piranhakanan.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
+                }
             }
         }     
         for(int i=0;i<=num_food;i++){
@@ -102,6 +120,11 @@ void Aquarium::runAquarium(){
             running=false;
             input = '0';
         }
+        ostringstream strs;
+        strs<<coin;
+        draw_text("G untuk membeli guppy, P untuk membeli piranha, x untuk keluar", 18, 10, 10, 0, 0, 0);
+        draw_text(strs.str(), 18, 10, 30, 0, 0, 0);
         update_screen();
+        
 	}
 }

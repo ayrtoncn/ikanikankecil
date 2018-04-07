@@ -1,11 +1,11 @@
 #include "Piranha.hpp"
 
 int Piranha::piranha_count = 0;
-int Piranha::PIRANHA_PRICE = 50;
+int Piranha::PIRANHA_PRICE = 15;
 int Piranha::PIRANHA_FULL_PERIOD = 50;
-int Piranha::PIRANHA_HUNGER_PERIOD = 50;
+int Piranha::PIRANHA_HUNGER_PERIOD = 15;
 int Piranha::PIRANHA_COIN_PERIOD = 50;
-int Piranha::PIRANHA_MOVEMENT_SPEED = 50;
+int Piranha::PIRANHA_MOVEMENT_SPEED = 100;
 // CTOR CCTOR DTOR
 Piranha::Piranha():Fish("Piranha" + (piranha_count + 1), PIRANHA_PRICE, PIRANHA_FULL_PERIOD, PIRANHA_HUNGER_PERIOD, PIRANHA_COIN_PERIOD, PIRANHA_MOVEMENT_SPEED){
     piranha_count++;
@@ -51,7 +51,10 @@ void Piranha::DropCoin() {
 }
 
 void Piranha::Eat() {
-
+    hunger_period=15;
+    Point P;
+    tujuan = P;
+    is_hungry = false;
 }
 
 void Piranha::dewaPiranha(){
@@ -60,14 +63,23 @@ void Piranha::dewaPiranha(){
     arah = rand()%8+1;
     time(&start);
     bool running=true;
-    while(running){
+    while(running&& name!="die"){
         //lock_guard<mutex> locker(lock1);
         srand(time(NULL));
         now = time_since_start();
         sec_since_last = now - prevtime;
         prevtime = now;
+        hunger_period-=sec_since_last;
+        prevtime = now;
+        if(hunger_period<=10 && hunger_period>=0){
+            is_hungry = true;
+        }else if(hunger_period<0){
+            name = "die";
+        }
         Move();
         // cout<<"Y"<<position.getX()<<endl;
         // cout<<"X"<<position.getY()<<endl;
     }
+    position.setX(-100);
+    position.setY(-100);
 }

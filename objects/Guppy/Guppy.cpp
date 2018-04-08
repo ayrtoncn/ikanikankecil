@@ -3,7 +3,7 @@
 int Guppy::GUPPY_PRICE = 10;
 int Guppy::GUPPY_FULL_PERIOD = 50;
 double Guppy::GUPPY_HUNGER_PERIOD = 15;
-int Guppy::GUPPY_COIN_PERIOD = 5;
+double Guppy::GUPPY_COIN_PERIOD = 5;
 int Guppy::GUPPY_MOVEMENT_SPEED = 80;
 int Guppy::guppy_count =0;
 // CTOR CCTOR DTOR
@@ -52,7 +52,7 @@ void Guppy::setGrowthLevel(int _growth_level) {
 
 // METHODS
 void Guppy::DropCoin() {
-    Coin coin(10, 1,position);  
+    coin_period = 5; 
 }
 
 void Guppy::Eat() {
@@ -73,11 +73,10 @@ void Guppy::dewaGuppy(){
         now = time_since_start();
         sec_since_last = now - prevtime;
         hunger_period-=sec_since_last;
-        int ctemp = coin_period;
         coin_period-=sec_since_last;
         //cout<<GUPPY_HUNGER_PERIOD<<endl;
         prevtime = now;
-        
+        //cout<<coin_period<<endl;
         if(hunger_period<=10 && hunger_period>=0){
             is_hungry = true;
             //cout<<tujuan.getX()<<" "<<tujuan.getY()<<endl;
@@ -86,7 +85,7 @@ void Guppy::dewaGuppy(){
         }
         if (coin_period <=0) {
             dropcoins = true;
-            coin_period = ctemp;
+
         } else {
             dropcoins = false;
         }

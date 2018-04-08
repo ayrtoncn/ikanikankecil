@@ -39,7 +39,6 @@ void InteractionChecker(Aquarium* Aq){
             Point temp;
             temp.setX(x);
             temp.setY(y);
-            Aq->snail.setTujuan(temp);
             break;
         }
     }
@@ -173,17 +172,19 @@ void InteractionChecker(Aquarium* Aq){
     //Guppy
     for(int gup = 0; gup <= Aq->num_guppy; gup++){
         if(Aq->guppy[gup]->getDropCoin()){
-            if(Aq->guppy[gup]->getGrowthLevel()==0){
+            Aq->guppy[gup]->setDropCoin(false);
+            Aq->guppy[gup]->DropCoin();
+            if(Aq->guppy[gup]->getGrowthLevel()<=3){
                 Aq->num_coin++;
                 Aq->num_object++;
                 Aq->coins.add(new Coin(10, 20, Aq->guppy[gup]->getPosition()));
                 Aq->object[Aq->num_object] = thread(&Coin::executeCoin, Aq->coins[Aq->num_coin]);
-            } else if(Aq->guppy[gup]->getGrowthLevel()==1){
+            } else if(Aq->guppy[gup]->getGrowthLevel()<=6){
                 Aq->num_coin++;
                 Aq->num_object++;
                 Aq->coins.add(new Coin(20, 20, Aq->guppy[gup]->getPosition()));
                 Aq->object[Aq->num_object] = thread(&Coin::executeCoin, Aq->coins[Aq->num_coin]);
-            } else if(Aq->guppy[gup]->getGrowthLevel()==2){
+            } else if(Aq->guppy[gup]->getGrowthLevel()>6){
                 Aq->num_coin++;
                 Aq->num_object++;
                 Aq->coins.add(new Coin(30, 20, Aq->guppy[gup]->getPosition()));
@@ -199,7 +200,7 @@ void InteractionChecker(Aquarium* Aq){
         Point pmin;
         for (int i = 0; i <= Aq->num_coin; i++)
         {
-            double temp = sqrt(pow(Aq->snail.getPosition().getX() - Aq->coins[i]->getPosition().getX(), 2) + pow(Aq->snail.getPosition().getY() - Aq->coins[i]->getPosition().getY(), 2));
+            double temp = sqrt(pow(Aq->snail.getPosition().getX() - Aq->coins[i]->getPosition().getX(), 2));
             if (min > temp)
             {
                 min = temp;

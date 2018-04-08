@@ -74,7 +74,7 @@ protected:
     int full_period; // periode kenyang
     bool is_hungry;
     double hunger_period; // periode butuh makan
-    int coin_period;
+    double coin_period;
     int movement_speed;
     Point position;
     Point tujuan;

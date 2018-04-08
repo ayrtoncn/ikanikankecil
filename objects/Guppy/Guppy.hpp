@@ -50,7 +50,7 @@ class Guppy : public Fish, public CoinProducer {
 
     //static
     static int guppy_count;
-    static int GUPPY_COIN_PERIOD;
+    static double GUPPY_COIN_PERIOD;
     static int GUPPY_FULL_PERIOD;
     static double GUPPY_HUNGER_PERIOD;
     static int GUPPY_MOVEMENT_SPEED;

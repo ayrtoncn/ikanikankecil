@@ -163,62 +163,75 @@ void Fish::Move(){
     srand(time(NULL));
     Point temp;
     if(tujuan.getX()==temp.getX()&& tujuan.getY()==temp.getY()){
-
+        srand(time(NULL));
         if(position.getX()<=10){
-            arah = 4;
+            arah = 0;
             time(&start);
         }else if(position.getX()>=SCREEN_WIDTH-10){
-            arah = 3;
+            arah = 3.14;
             time(&start);
         }else if(position.getY()<=10){
-            arah = 2;
+            arah = 3.14/2;
             time(&start);
         }else if(position.getY()>=SCREEN_HEIGHT-10){
-            arah = 1;
+            arah = -3.14/2;
             time(&start);
         }
         // cout<<movement_speed<<endl;
         if(difftime(time(0),start)<=delay){
-            switch(arah){
-                case 1:
-                    position.setY(position.getY()-movement_speed * sec_since_last);
-                    break;
-                case 2:
-                    position.setY(position.getY()+movement_speed * sec_since_last);
-                    break;
-                case 3:
-                    position.setX(position.getX()-movement_speed * sec_since_last);
-                    orientation = 'l';
-                    break;
-                case 4:
-                    position.setX(position.getX()+movement_speed * sec_since_last);
-                    orientation = 'r';
-                    break;
-                case 5:
-                    position.setX(position.getX()+movement_speed * sec_since_last);
-                    position.setY(position.getY()+movement_speed * sec_since_last);
-                    orientation = 'r';
-                    break;
-                case 6:
-                    position.setX(position.getX()+movement_speed * sec_since_last);
-                    position.setY(position.getY()-movement_speed * sec_since_last);
-                    orientation = 'r';
-                    break;
-                case 7:
-                    position.setX(position.getX()-movement_speed * sec_since_last);
-                    position.setY(position.getY()+movement_speed * sec_since_last);
-                    orientation = 'l';
-                    break;
-                case 8:
-                    position.setX(position.getX()-movement_speed * sec_since_last);
-                    position.setY(position.getY()-movement_speed * sec_since_last);
-                    orientation = 'l';
-                    break;
+            position.setX(position.getX()+movement_speed * sec_since_last*cos(arah));
+            position.setY(position.getY()+movement_speed * sec_since_last*sin(arah));
+            if((arah<=3.14 && arah>=(3.14/2) )|| (arah>=-3.14 && arah<=-(3.14/2))){
+                orientation = 'l';
+            }else{
+                orientation = 'r';
             }
+            // switch(arah){
+            //     case 1:
+            //         position.setY(position.getY()-movement_speed * sec_since_last);
+            //         break;
+            //     case 2:
+            //         position.setY(position.getY()+movement_speed * sec_since_last);
+            //         break;
+            //     case 3:
+            //         position.setX(position.getX()-movement_speed * sec_since_last);
+            //         orientation = 'l';
+            //         break;
+            //     case 4:
+            //         position.setX(position.getX()+movement_speed * sec_since_last);
+            //         orientation = 'r';
+            //         break;
+            //     case 5:
+            //         position.setX(position.getX()+movement_speed * sec_since_last);
+            //         position.setY(position.getY()+movement_speed * sec_since_last);
+            //         orientation = 'r';
+            //         break;
+            //     case 6:
+            //         position.setX(position.getX()+movement_speed * sec_since_last);
+            //         position.setY(position.getY()-movement_speed * sec_since_last);
+            //         orientation = 'r';
+            //         break;
+            //     case 7:
+            //         position.setX(position.getX()-movement_speed * sec_since_last);
+            //         position.setY(position.getY()+movement_speed * sec_since_last);
+            //         orientation = 'l';
+            //         break;
+            //     case 8:
+            //         position.setX(position.getX()-movement_speed * sec_since_last);
+            //         position.setY(position.getY()-movement_speed * sec_since_last);
+            //         orientation = 'l';
+            //         break;
+            // }
         }else{
             time(&start);
             delay= rand()%4+1;
-            arah = rand()%8+1;
+            int min = rand()%2+1;
+            if(min==1){
+                arah = ((rand()%180+1))*1;
+            }else{
+                arah = ((rand()%180+1))*-1;
+            }
+            arah = arah/180;
         }
     }else{
         double a;

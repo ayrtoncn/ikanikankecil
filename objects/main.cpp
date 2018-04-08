@@ -30,6 +30,9 @@ void InteractionChecker(Aquarium* Aq){
         case SDLK_p:
             Aq->input ='p';
             break;
+        case SDLK_e:
+            Aq->input = 'e';
+            break;
         case SDL_BUTTON_LEFT:
             // cout<<num_food<<endl;
             Aq->input = 'c';
@@ -43,7 +46,7 @@ void InteractionChecker(Aquarium* Aq){
         }
     }
     
-
+    int eggPrice = 30;
     if(Aq->input == 'g' && Aq->coin -Guppy::GUPPY_PRICE >=0){
         srand(time(NULL));
         Aq->num_fish++;
@@ -77,6 +80,9 @@ void InteractionChecker(Aquarium* Aq){
         temp.setX(x);
         temp.setY(y);
         Aq->input = '0';
+    }else if(Aq->input =='e' && Aq->coin - eggPrice >=0){
+        Aq->coin -= eggPrice;
+        Aq->num_eggs++;
     }
     //interaksi piranha mencari guppy
     for (int pir = 0;pir<=Aq->num_piran;pir++){

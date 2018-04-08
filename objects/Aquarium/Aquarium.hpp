@@ -57,6 +57,7 @@ public:
     int num_guppy;
     int num_piran;
     int num_food;
+    int num_eggs;
     int num_coin;
     int num_object;
     int coin;

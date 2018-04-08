@@ -64,6 +64,7 @@ void Aquarium::runAquarium(){
     num_guppy = -1;
     num_coin = -1;
     num_piran =-1;
+    num_eggs = 0;
     num_food = -1;
     //object index 0 di buat untuk snail
     num_object = 0;
@@ -124,15 +125,44 @@ void Aquarium::runAquarium(){
             draw_image("snailkanan.png", snail.getPosition().getX(), snail.getPosition().getY());
         }
           
-        if(input=='x'){
+        if((input=='x') || (num_eggs == 3) || (coin<Guppy::GUPPY_PRICE && num_fish == 0)){
             running=false;
             input = '0';
         }
         ostringstream strs;
         strs<<coin;
+        draw_text("Jumlah telur: ", 18, 10, 50, 0, 0, 0);
+        draw_text(num_eggs,18, 140, 50, 0, 0, 0);
         draw_text("G untuk membeli guppy, P untuk membeli piranha, x untuk keluar", 18, 10, 10, 0, 0, 0);
         draw_text(strs.str(), 18, 10, 30, 0, 0, 0);
         update_screen();
         
 	}
+    if (num_eggs == 3){
+        bool running = true;
+        while(running){
+            InteractionChecker(this);
+            clear_screen();
+            draw_image("bg1.jpg", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+            draw_text("You win!", 30, 10, 10, 0, 0, 0);
+            update_screen();
+            if (input=='x'){
+                running=false;
+                input='0';
+            }
+        }
+    } else {
+        bool running = true;
+        while (running){
+            InteractionChecker(this);
+            clear_screen();
+            draw_image("bg1.jpg", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+            draw_text("You noob.", 30, 10, 10, 0, 0, 0);
+            update_screen();
+            if (input == 'x'){
+                running = false;
+                input = '0';
+            }
+        }
+    }
 }

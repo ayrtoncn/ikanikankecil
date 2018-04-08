@@ -106,6 +106,7 @@ void InteractionChecker(Aquarium* Aq){
     } else if(Aq->input =='e' && Aq->coin - eggPrice >=0){
         Aq->coin -= eggPrice;
         Aq->num_eggs++;
+        Aq->input = '0';
     }
 
     

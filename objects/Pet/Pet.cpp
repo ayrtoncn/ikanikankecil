@@ -11,7 +11,7 @@
 // CTOR CCTOR DTOR
 Snail::Snail() {
     movement_speed = 20;
-    position.setX(50);
+    position.setX(SCREEN_WIDTH/2);
     position.setY(SCREEN_HEIGHT-40);
 }
 
@@ -112,7 +112,9 @@ void Snail::executeSnail(){
         Snail_prevtime = Snail_now;
         //cout<<tujuan.getX()<<" "<< tujuan.getY()<< endl;
         if(tujuan.getX()!=temp.getX() && tujuan.getY()!=temp.getY()){
-            Move();
+            if(!(tujuan.getX()-10<=position.getX() && tujuan.getX()+10>=position.getX())){
+                Move();
+            }
         }
     }
 }

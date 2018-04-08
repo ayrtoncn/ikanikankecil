@@ -194,22 +194,43 @@ void InteractionChecker(Aquarium* Aq){
     }
 
     //interaksi siput mencari uang
-    if (Aq->num_coin > 0)
+    if (Aq->num_coin >= 0)
     {
         double min = 999999;
+        double minL= 999999;
         Point pmin;
+        Point pminL;
         for (int i = 0; i <= Aq->num_coin; i++)
         {
+            //cout<<i<<endl;
             double temp = sqrt(pow(Aq->snail.getPosition().getX() - Aq->coins[i]->getPosition().getX(), 2));
-            if (min > temp)
+            double temp2 = sqrt(pow(SCREEN_HEIGHT-Aq->coins[i]->getPosition().getY(), 2));
+            if(Aq->coins[i]->getPosition().getY()>=SCREEN_HEIGHT-40)
             {
-                min = temp;
-                pmin.setX(Aq->coins[i]->getPosition().getX());
-                pmin.setY(Aq->coins[i]->getPosition().getY());
+                if (minL > temp)
+                {
+                    minL = temp;
+                    pminL.setX(Aq->coins[i]->getPosition().getX());
+                    pminL.setY(Aq->coins[i]->getPosition().getY());
+                }
+            }else{
+                if (min > temp2)
+                {
+                    min = temp2;
+                    pmin.setX(Aq->coins[i]->getPosition().getX());
+                    pmin.setY(Aq->coins[i]->getPosition().getY());
+                }
+            }
+            if(minL == 999999){
+                Aq->snail.setTujuan(pmin);
+            }else if(minL!=999999){
+                Aq->snail.setTujuan(pminL);
             }
         }
         //cout<<pmin.getX()<<" "<<pmin.getY()<<endl;
-        Aq->snail.setTujuan(pmin);
+        
+    }else{
+        Aq->snail.setTujuan(Point());
     }
 
     //interaksi siput ngambil uang

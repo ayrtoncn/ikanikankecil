@@ -81,7 +81,7 @@ protected:
     char orientation; // 'l' for left and 'r' for right
     double delay;
     time_t start;
-    int arah;
+    double arah;
     double now;
     double prevtime;
     double sec_since_last;

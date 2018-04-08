@@ -65,19 +65,44 @@ void InteractionChecker(Aquarium* Aq){
         Aq->ikan[Aq->num_fish] = thread(&Piranha::dewaPiranha,Aq->piranha[Aq->num_piran]);
         Aq->input = '0';
         //harga makanan belum dijadikan static
-    }else if(Aq->input =='c'&& Aq->coin -5 >=0){
-        Aq->coin -=5;
-        Aq->num_food++;
-        Aq->num_object++;
+    }else if(Aq->input =='c'){
         int x,y;
         SDL_GetMouseState(&x,&y);
-        Aq->foods.add(new Food(x));
-        Aq->object[Aq->num_object] = thread(&Food::executeFood,Aq->foods[Aq->num_food]); 
-        Point temp;
-        temp.setX(x);
-        temp.setY(y);
-        Aq->input = '0';
+        bool coin_take=false;
+        //interaksi mouse dengan coin
+        for (int i = 0; i <= Aq->num_coin; i++)
+        {
+            if (Aq->coins[i]->getPosition().getX() <= x + 20 
+            && Aq->coins[i]->getPosition().getX() >= x- 20 
+            && Aq->coins[i]->getPosition().getY() >= y - 20
+            && Aq->coins[i]->getPosition().getY() <= y + 20)
+            {
+                coin_take = true;
+                Aq->coin += Aq->coins[i]->getValue();
+                Aq->coins[i]->~Coin();
+                Aq->coins.del(i);
+                Aq->num_coin--;
+                break;
+            }
+        }
+
+        if(!coin_take && Aq->coin -5 >=0){
+            // /cout<<"AAA"<<endl;
+            Aq->coin -=5;
+            Aq->num_food++;
+            Aq->num_object++;
+            Aq->foods.add(new Food(x));
+            Aq->object[Aq->num_object] = thread(&Food::executeFood,Aq->foods[Aq->num_food]); 
+            Point temp;
+            temp.setX(x);
+            temp.setY(y);
+            Aq->input = '0';
+        }else{
+            Aq->input = '0';
+        }      
     }
+
+    
     //interaksi piranha mencari guppy
     for (int pir = 0;pir<=Aq->num_piran;pir++){
         if(Aq->piranha[pir]->getIsHungry()){
@@ -114,10 +139,10 @@ void InteractionChecker(Aquarium* Aq){
                     }
                 }
             }
-            //cout<<pmin.getX()<<" "<<pmin.getY()<<endl;
             Aq->guppy[gup]->setTujuan(pmin);
         }
     }
+
     //Interaksi ikan piranha makan guppy
     for(int pir = 0; pir <= Aq->num_piran; pir++){
         if(Aq->piranha[pir]->getIsHungry()){
@@ -126,18 +151,22 @@ void InteractionChecker(Aquarium* Aq){
                 && Aq->guppy[gup]->getPosition().getX() >= Aq->piranha[pir]->getPosition().getX()-60 
                 && Aq->guppy[gup]->getPosition().getY() <= Aq->piranha[pir]->getPosition().getY()+50 
                 && Aq->guppy[gup]->getPosition().getY() >= Aq->piranha[pir]->getPosition().getY()-50){
-                    Point t;
-                    t.setX(-100);
-                    t.setY(-100);
                     //cout<<"MATIIIIIIIIIIIIIIIIIIIIII"<<endl;
                     Aq->guppy[gup]->setIsHungry(false);
-                    Aq->guppy[gup]->setPosition(t);
                     Aq->guppy[gup]->setName("die");
                     Aq->piranha[pir]->Eat();
 
                     Aq->num_coin++;
                     Aq->num_object++;
-                    Aq->coins.add(new Coin(Aq->guppy[gup]->getPrice() * (Aq->guppy[gup]->getGrowthLevel() + 1), 20, Aq->piranha[pir]->getPosition()));
+                    int level;
+                    if(Aq->guppy[gup]->getGrowthLevel()<=3){
+                        level = 2;
+                    }else if(Aq->guppy[gup]->getGrowthLevel()<=6){
+                        level = 3;
+                    }else{
+                        level = 4;
+                    }
+                    Aq->coins.add(new Coin(Aq->guppy[gup]->getPrice() * level, 20, Aq->piranha[pir]->getPosition()));
                     Aq->object[Aq->num_object] = thread(&Coin::executeCoin, Aq->coins[Aq->num_coin]);
 
                     Aq->guppy.del(gup);
@@ -155,19 +184,23 @@ void InteractionChecker(Aquarium* Aq){
                 && Aq->foods[i]->getPosition().getX() >= Aq->guppy[gup]->getPosition().getX()-60 
                 && Aq->foods[i]->getPosition().getY() <= Aq->guppy[gup]->getPosition().getY()+50 
                 && Aq->foods[i]->getPosition().getY() >= Aq->guppy[gup]->getPosition().getY()-50){
-                    Point t;
-                    t.setX(-100);
-                    t.setY(-100);
                     Aq->guppy[gup]->Eat();
-                    //cout<<"MATIIIIIIIIIIIIIIIIIIIIII"<<endl;
-                    Aq->foods[i]->setPosition(t);
-                    Aq->foods[i]->setName("die");
                     Aq->foods.del(i);
                     Aq->num_food = Aq->num_food - 1;
                 }
             }
         }
-    }   
+    }
+
+    //Interaksi makanan sampai dasar
+        for(int i = 0; i <= Aq->num_food; i++){
+            if(Aq->foods[i]->getPosition().getY() >= SCREEN_HEIGHT-30){
+                //cout<<"MATIIIIIIIIIIIIIIIIIIIIII"<<endl;
+                Aq->foods.del(i);
+                Aq->num_food = Aq->num_food - 1;
+            }
+        }
+
     //interaksi ikan ngeluarin uang
     //Guppy
     for(int gup = 0; gup <= Aq->num_guppy; gup++){
@@ -202,7 +235,6 @@ void InteractionChecker(Aquarium* Aq){
         Point pminL;
         for (int i = 0; i <= Aq->num_coin; i++)
         {
-            //cout<<i<<endl;
             double temp = sqrt(pow(Aq->snail.getPosition().getX() - Aq->coins[i]->getPosition().getX(), 2));
             double temp2 = sqrt(pow(SCREEN_HEIGHT-Aq->coins[i]->getPosition().getY(), 2));
             if(Aq->coins[i]->getPosition().getY()>=SCREEN_HEIGHT-40)
@@ -226,9 +258,7 @@ void InteractionChecker(Aquarium* Aq){
             }else if(minL!=999999){
                 Aq->snail.setTujuan(pminL);
             }
-        }
-        //cout<<pmin.getX()<<" "<<pmin.getY()<<endl;
-        
+        }        
     }else{
         Aq->snail.setTujuan(Point());
     }
@@ -240,15 +270,13 @@ void InteractionChecker(Aquarium* Aq){
         && Aq->coins[i]->getPosition().getX() >= Aq->snail.getPosition().getX() - 20 
         && Aq->coins[i]->getPosition().getY() >= Aq->snail.getPosition().getY() - 20)
         {
-            Point t;
-            t.setX(-100);
-            t.setY(-100);
             Aq->coin += Aq->coins[i]->getValue();
             Aq->coins[i]->~Coin();
             Aq->coins.del(i);
             Aq->num_coin--;
         }
     }
+    
 
     Aq->unlockAquarium();
 }

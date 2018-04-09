@@ -45,9 +45,9 @@ void Piranha::setPiranhaCount(int _piranha_count) {
 
 // METHODS
 void Piranha::DropCoin() {
-    int guppy_price=0;
-    int guppy_growth_level=0;
-    Coin coin(guppy_price * guppy_growth_level + 1, 1,position);
+    //int guppy_price=0;
+    //int guppy_growth_level=0;
+    //Coin coin(guppy_price * guppy_growth_level + 1, 1,position);
 }
 
 void Piranha::Eat() {

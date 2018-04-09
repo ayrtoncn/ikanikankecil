@@ -10,6 +10,7 @@
 #include "../Pet/Pet.hpp"
 #include "../oop.hpp"
 #include <iostream>
+#include <fstream>
 #include <math.h>
 #include <sstream>
 #include <cstdlib>

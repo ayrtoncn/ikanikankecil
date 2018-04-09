@@ -79,20 +79,44 @@ void Aquarium::runAquarium(){
             if(guppy[i]->getName()!="die"){
                 if(guppy[i]->getOrientation() =='l'){
                     if(guppy[i]->getGrowthLevel()<=3){
-                        draw_image("ikankiri1.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        if(!guppy[i]->getIsHungry()){
+                            draw_image("ikankiri1.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        } else {
+                            draw_image("ikankiri1laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        }
                     }else if(guppy[i]->getGrowthLevel()<=6){
-                        draw_image("ikankiri2.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        if(!guppy[i]->getIsHungry()){
+                            draw_image("ikankiri2.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        }else{
+                            draw_image("ikankiri2laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        }
                     }else{
-                        draw_image("ikankiri3.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        if(!guppy[i]->getIsHungry()){
+                            draw_image("ikankiri3.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        }else{
+                            draw_image("ikankiri3laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        }
                     }
                     
                 }else{
                     if(guppy[i]->getGrowthLevel()<=3){
-                        draw_image("ikankanan1.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        if(!guppy[i]->getIsHungry()){
+                            draw_image("ikankanan1.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        }else{
+                            draw_image("ikankanan1laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        }
                     }else if(guppy[i]->getGrowthLevel()<=6){
-                        draw_image("ikankanan2.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        if(!guppy[i]->getIsHungry()){
+                            draw_image("ikankanan2.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        }else{
+                            draw_image("ikankanan2laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        }
                     }else{
-                        draw_image("ikankanan3.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        if(!guppy[i]->getIsHungry()){
+                            draw_image("ikankanan3.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        }else{
+                            draw_image("ikankanan3laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                        }
                     }
                     
                 }
@@ -101,9 +125,17 @@ void Aquarium::runAquarium(){
         for(int i = 0; i <= num_piran ; i++){
             if(piranha[i]->getName()!="die"){
                 if(piranha[i]->getOrientation() =='l'){
-                    draw_image("piranhakiri.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
+                    if(!piranha[i]->getIsHungry()){
+                        draw_image("piranhakiri.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
+                    }else{
+                        draw_image("piranhakirilaper.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
+                    }
                 }else{
-                    draw_image("piranhakanan.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
+                    if(!piranha[i]->getIsHungry()){
+                        draw_image("piranhakanan.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
+                    }else{
+                        draw_image("piranhakananlaper.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
+                    }
                 }
             }
         }     

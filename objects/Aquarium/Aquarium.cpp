@@ -157,7 +157,7 @@ void Aquarium::runAquarium(){
             draw_image("snailkanan.png", snail.getPosition().getX(), snail.getPosition().getY());
         }
           
-        if((input=='x') || (num_eggs == 3) || ((coin-Guppy::GUPPY_PRICE<0) && (num_guppy+num_piran <= 0))){
+        if((input=='x') || (num_eggs == 3) || ((coin-Guppy::GUPPY_PRICE<0) && (num_coin<=-1) && (num_guppy+num_piran <= 0))){
             running=false;
             input = '0';
         }
@@ -165,7 +165,7 @@ void Aquarium::runAquarium(){
         strs<<coin;
         draw_text("Jumlah telur: ", 18, 10, 50, 0, 0, 0);
         draw_text(std::to_string(num_eggs),18, 140, 50, 0, 0, 0);
-        draw_text("G untuk membeli guppy, P untuk membeli piranha, x untuk keluar", 18, 10, 10, 0, 0, 0);
+        draw_text("G untuk membeli guppy, P untuk membeli piranha, E untuk membeli telur, x untuk keluar", 18, 10, 10, 0, 0, 0);
         draw_text(strs.str(), 18, 10, 30, 0, 0, 0);
         update_screen();
         

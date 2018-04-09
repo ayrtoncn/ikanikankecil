@@ -42,8 +42,8 @@ public:
     void runAquarium();
 
     // LOAD SAVE
-    void load();
     void save();
+    void load();
 
     // METHODS
     friend void InteractionChecker(Aquarium* Aq);

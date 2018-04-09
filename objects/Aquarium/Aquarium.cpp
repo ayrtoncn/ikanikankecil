@@ -166,3 +166,19 @@ void Aquarium::runAquarium(){
         }
     }
 }
+
+void Aquarium::save()
+{
+    ofstream save_file;
+    save_file.open("savegame.txt", out);
+    save_file.write((char *)this, sizeof(&this));
+    save_file.close();
+}
+
+void Aquarium::load()
+{
+    ofstream load_file;
+    load_file.open("savegame.txt", in);
+    load_file.read((char *)this, sizeof(&this));
+    load_file.close();
+}

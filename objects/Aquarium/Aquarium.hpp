@@ -41,10 +41,6 @@ public:
     // DEWA AQUARIUM 
     void runAquarium();
 
-    // SAVE LOAD
-    void save();
-    void load();
-
     // METHODS
     friend void InteractionChecker(Aquarium* Aq);
     friend void AddFishFromFish(Aquarium& Aq, const Fish& _fish);
@@ -62,6 +58,7 @@ public:
     int num_guppy;
     int num_piran;
     int num_food;
+    int num_eggs;
     int num_coin;
     int num_object;
     int coin;

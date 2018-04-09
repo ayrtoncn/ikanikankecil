@@ -32,8 +32,6 @@ public:
 
     void setTujuan(Point);
     void setOrientation(int);
-    void MoveRight();
-    void MoveLeft();
     void setMovementSpeed(int _movement_speed);
     void setPosition(Point _position);
 

@@ -64,16 +64,6 @@ void Snail::setTujuan(Point _tujuan){
 }
 
 // METHODS
-void Snail::MoveRight() {
-    position.setX(position.getX()+1);
-    orientation = 2;
-}
-
-void Snail::MoveLeft() {
-    position.setX(position.getX()-1);
-    orientation = 1;
-}
-
 void Snail::Move(){
     double a;
     a = atan2(0,tujuan.getX()-position.getX());

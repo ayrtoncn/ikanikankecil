@@ -18,6 +18,7 @@ Guppy::Guppy(Point position, char orientation): Fish("Guppy" + (guppy_count + 1)
 }
 
 Guppy::Guppy(const Guppy &guppy):Fish("Guppy" + (guppy_count + 1), GUPPY_PRICE, GUPPY_FULL_PERIOD, GUPPY_HUNGER_PERIOD, GUPPY_COIN_PERIOD, GUPPY_MOVEMENT_SPEED){
+    growth_level = guppy.growth_level;
     // this=guppy;
     // guppy_count++;
     // name = "Guppy" + guppy_count;

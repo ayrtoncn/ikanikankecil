@@ -199,8 +199,7 @@ void Aquarium::runAquarium(){
     }
 }
 
-void Aquarium::save()
-{
+void Aquarium::save() {
     int n_guppy = guppy.getAmount();
     int n_piran = piranha.getAmount();
     int n_coins = coins.getAmount();
@@ -227,11 +226,21 @@ void Aquarium::save()
     ofstream save_file;
     save_file.open("savegame", ios::out | ios::trunc);
 
-    save_file.write((char *)&coin, sizeof(coin));
+    // marker for amount of everything
     save_file.write((char *)&n_guppy, sizeof(n_guppy));
     save_file.write((char *)&n_piran, sizeof(n_piran));
     save_file.write((char *)&n_coins, sizeof(n_coins));
     save_file.write((char *)&n_foods, sizeof(n_foods));
+    
+    // attributes
+    save_file.write((char *)&num_fish, sizeof(num_fish));
+    save_file.write((char *)&num_guppy, sizeof(num_guppy));
+    save_file.write((char *)&num_piran, sizeof(num_piran));
+    save_file.write((char *)&num_food, sizeof(num_food));
+    save_file.write((char *)&num_eggs, sizeof(num_eggs));
+    save_file.write((char *)&num_coin, sizeof(num_coin));
+    save_file.write((char *)&num_object, sizeof(num_object));
+    save_file.write((char *)&coin, sizeof(coin));
 
     for (int i = 0; i < n_guppy; i++) {
         save_file.write((char *)&arr_guppy[i], sizeof(arr_guppy[i]));
@@ -249,48 +258,61 @@ void Aquarium::save()
         save_file.write((char *)&arr_foods[i], sizeof(arr_foods[i]));
     }
 
+    save_file.write((char *)&snail, sizeof(snail));
+
     save_file.close();
 }
 
-void Aquarium::load(Aquarium* Aq)
-{
+void Aquarium::load() {
     ifstream load_file;
     load_file.open("savegame", fstream::in);
 
-    int n_guppy = guppy.getAmount();
-    int n_piran = piranha.getAmount();
-    int n_coins = coins.getAmount();
-    int n_foods = foods.getAmount();
+    // loading markers
+    int n_guppy;
+    int n_piran;
+    int n_coins;
+    int n_foods;
 
-    load_file.read((char *)&coin, sizeof(coin));
     load_file.read((char *)&n_guppy, sizeof(n_guppy));
     load_file.read((char *)&n_piran, sizeof(n_piran));
     load_file.read((char *)&n_coins, sizeof(n_coins));
     load_file.read((char *)&n_foods, sizeof(n_foods));
 
+    // attributes
+    load_file.read((char *)&num_fish, sizeof(num_fish));
+    load_file.read((char *)&num_guppy, sizeof(num_guppy));
+    load_file.read((char *)&num_piran, sizeof(num_piran));
+    load_file.read((char *)&num_food, sizeof(num_food));
+    load_file.read((char *)&num_eggs, sizeof(num_eggs));
+    load_file.read((char *)&num_coin, sizeof(num_coin));
+    load_file.read((char *)&num_object, sizeof(num_object));
+    load_file.read((char *)&coin, sizeof(coin));
+
     for (int i = 0; i < n_guppy; i++) {
         Guppy new_guppy;
         load_file.read((char *)&new_guppy, sizeof(new_guppy));
-        guppy.add(&new_guppy);
+        guppy.add(new Guppy(new_guppy));
     }
 
     for (int i = 0; i < n_piran; i++) {
         Piranha new_piran;
         load_file.read((char *)&new_piran, sizeof(new_piran));
-        piranha.add(&new_piran);
+        piranha.add(new Piranha(new_piran));
     }
 
     for (int i = 0; i < n_coins; i++) {
         Coin new_coin;
         load_file.read((char *)&new_coin, sizeof(new_coin));
-        coins.add(&new_coin);
+        coins.add(new Coin(new_coin));
     }
 
     for (int i = 0; i < n_foods; i++) {
         Food new_food;
         load_file.read((char *)&new_food, sizeof(new_food));
-        foods.add(&new_food);
+        foods.add(new Food(new_food));
     }
+
+    load_file.read((char *)&snail, sizeof(snail));
 
     load_file.close();
 }

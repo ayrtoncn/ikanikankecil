@@ -43,7 +43,7 @@ public:
 
     // LOAD SAVE
     void save();
-    void load();
+    void load(Aquarium *Aq);
 
     // METHODS
     friend void InteractionChecker(Aquarium* Aq);

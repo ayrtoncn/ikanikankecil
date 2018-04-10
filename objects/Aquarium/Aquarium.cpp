@@ -138,7 +138,7 @@ void Aquarium::runAquarium(){
                     }
                 }
             }
-        }     
+        }
         for(int i=0;i<=num_food;i++){
             if(foods[i]->getName()!="die"){
                 draw_image("pelet.png",foods[i]->getPosition().getX(),foods[i]->getPosition().getY());
@@ -201,16 +201,96 @@ void Aquarium::runAquarium(){
 
 void Aquarium::save()
 {
+    int n_guppy = guppy.getAmount();
+    int n_piran = piranha.getAmount();
+    int n_coins = coins.getAmount();
+    int n_foods = foods.getAmount();
+
+    Guppy arr_guppy[n_guppy];
+    Piranha arr_piran[n_piran];
+    Coin arr_coins[n_coins];
+    Food arr_foods[n_foods];
+
+    for (int i = 0; i < n_guppy; i++) {
+        arr_guppy[i] = *guppy[i];
+    }
+    for (int i = 0; i < n_piran; i++) {
+        arr_piran[i] = *piranha[i];
+    }
+    for (int i = 0; i < n_coins; i++) {
+        arr_coins[i] = *coins[i];
+    }
+    for (int i = 0; i < n_foods; i++) {
+        arr_foods[i] = *foods[i];
+    }
+
     ofstream save_file;
-    save_file.open("savegame.txt", fstream::out);
-    save_file.write((char *)this, sizeof(this));
+    save_file.open("savegame", ios::out | ios::trunc);
+
+    save_file.write((char *)&coin, sizeof(coin));
+    save_file.write((char *)&n_guppy, sizeof(n_guppy));
+    save_file.write((char *)&n_piran, sizeof(n_piran));
+    save_file.write((char *)&n_coins, sizeof(n_coins));
+    save_file.write((char *)&n_foods, sizeof(n_foods));
+
+    for (int i = 0; i < n_guppy; i++) {
+        save_file.write((char *)&arr_guppy[i], sizeof(arr_guppy[i]));
+    }
+
+    for (int i = 0; i < n_piran; i++) {
+        save_file.write((char *)&arr_piran[i], sizeof(arr_piran[i]));
+    }
+
+    for (int i = 0; i < n_coins; i++) {
+        save_file.write((char *)&arr_coins[i], sizeof(arr_coins[i]));
+    }
+
+    for (int i = 0; i < n_foods; i++) {
+        save_file.write((char *)&arr_foods[i], sizeof(arr_foods[i]));
+    }
+
     save_file.close();
 }
 
-void Aquarium::load()
+void Aquarium::load(Aquarium* Aq)
 {
     ifstream load_file;
-    load_file.open("savegame.txt", fstream::in);
-    load_file.read((char *)this, sizeof(this));
+    load_file.open("savegame", fstream::in);
+
+    int n_guppy = guppy.getAmount();
+    int n_piran = piranha.getAmount();
+    int n_coins = coins.getAmount();
+    int n_foods = foods.getAmount();
+
+    load_file.read((char *)&coin, sizeof(coin));
+    load_file.read((char *)&n_guppy, sizeof(n_guppy));
+    load_file.read((char *)&n_piran, sizeof(n_piran));
+    load_file.read((char *)&n_coins, sizeof(n_coins));
+    load_file.read((char *)&n_foods, sizeof(n_foods));
+
+    for (int i = 0; i < n_guppy; i++) {
+        Guppy new_guppy;
+        load_file.read((char *)&new_guppy, sizeof(new_guppy));
+        guppy.add(&new_guppy);
+    }
+
+    for (int i = 0; i < n_piran; i++) {
+        Piranha new_piran;
+        load_file.read((char *)&new_piran, sizeof(new_piran));
+        piranha.add(&new_piran);
+    }
+
+    for (int i = 0; i < n_coins; i++) {
+        Coin new_coin;
+        load_file.read((char *)&new_coin, sizeof(new_coin));
+        coins.add(&new_coin);
+    }
+
+    for (int i = 0; i < n_foods; i++) {
+        Food new_food;
+        load_file.read((char *)&new_food, sizeof(new_food));
+        foods.add(&new_food);
+    }
+
     load_file.close();
 }

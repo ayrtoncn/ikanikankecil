@@ -33,6 +33,9 @@ void InteractionChecker(Aquarium* Aq){
         case SDLK_e:
             Aq->input = 'e';
             break;
+        case SDLK_s:
+            Aq->input = 's';
+            break;
         case SDL_BUTTON_LEFT:
             // cout<<num_food<<endl;
             Aq->input = 'c';
@@ -47,7 +50,7 @@ void InteractionChecker(Aquarium* Aq){
     }
     
     int eggPrice = 30;
-    if(Aq->input == 'g' && Aq->coin -Guppy::GUPPY_PRICE >=0){
+    if(Aq->input == 'g' && Aq->coin -Guppy::GUPPY_PRICE >=0) {
         srand(time(NULL));
         Aq->num_fish++;
         Aq->num_guppy++;
@@ -57,7 +60,8 @@ void InteractionChecker(Aquarium* Aq){
         Aq->guppy.add(new Guppy(temp,'l'));
         Aq->ikan[Aq->num_fish] = thread(&Guppy::dewaGuppy,Aq->guppy[Aq->num_guppy]);
         Aq->input = '0';
-    }else if(Aq->input =='p'&& Aq->coin-Piranha::PIRANHA_PRICE >=0){
+    }
+    else if(Aq->input =='p'&& Aq->coin-Piranha::PIRANHA_PRICE >=0) {
         srand(time(NULL));
         Aq->num_piran++;
         Aq->num_fish++;
@@ -68,13 +72,13 @@ void InteractionChecker(Aquarium* Aq){
         Aq->ikan[Aq->num_fish] = thread(&Piranha::dewaPiranha,Aq->piranha[Aq->num_piran]);
         Aq->input = '0';
         //harga makanan belum dijadikan static
-    }else if(Aq->input =='c'){
+    }
+    else if(Aq->input =='c') {
         int x,y;
         SDL_GetMouseState(&x,&y);
         bool coin_take=false;
         //interaksi mouse dengan coin
-        for (int i = 0; i <= Aq->num_coin; i++)
-        {
+        for (int i = 0; i <= Aq->num_coin; i++) {
             if (Aq->coins[i]->getPosition().getX() <= x + 20 
             && Aq->coins[i]->getPosition().getX() >= x- 20 
             && Aq->coins[i]->getPosition().getY() >= y - 20
@@ -89,7 +93,7 @@ void InteractionChecker(Aquarium* Aq){
             }
         }
 
-        if(!coin_take && Aq->coin -5 >=0){
+        if(!coin_take && Aq->coin -5 >=0) {
             // /cout<<"AAA"<<endl;
             Aq->coin -=5;
             Aq->num_food++;
@@ -100,13 +104,18 @@ void InteractionChecker(Aquarium* Aq){
             temp.setX(x);
             temp.setY(y);
             Aq->input = '0';
-        }else{
+        }
+        else {
             Aq->input = '0';
         }      
-    } else if(Aq->input =='e' && Aq->coin - eggPrice >=0){
+    }
+    else if(Aq->input =='e' && Aq->coin - eggPrice >=0){
         Aq->coin -= eggPrice;
         Aq->num_eggs++;
         Aq->input = '0';
+    }
+    else if (Aq->input == 's') {
+        Aq->save();
     }
 
     

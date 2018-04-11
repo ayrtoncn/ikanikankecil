@@ -44,14 +44,19 @@ Aquarium::~Aquarium(){
             coins[i]->stop();
         }
         snail.stop();
+        for(int i = 0; i < num_fish; i++){
+            ikan[i].join();
+        }
+        for(int i = 0; i < num_object; i++){
+            object[i].join();
+        }
+    }catch(...){
         for(int i = 0; i < 1000; i++){
             ikan[i].join();
         }
         for(int i = 0; i < 1000; i++){
             object[i].join();
         }
-    }catch(...){
-        printf("masuk\n");
     }
 }
 

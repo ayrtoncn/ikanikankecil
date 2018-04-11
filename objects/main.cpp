@@ -298,7 +298,7 @@ void InteractionChecker(Aquarium* Aq){
         && Aq->coins[i]->getPosition().getY() >= Aq->snail.getPosition().getY() - 20)
         {
             Aq->coin += Aq->coins[i]->getValue();
-            Aq->coins[i]->~Coin();
+            // Aq->coins[i]->~Coin();
             Aq->coins.del(i);
             Aq->num_coin--;
         }
@@ -318,8 +318,8 @@ void DeleteFoodfromFoods(Aquarium& Aq, const Food &food);
 
 
 int main(){
-    Aquarium *Aq = new Aquarium();
-    Aq->runAquarium();
-    delete Aq;
+    Aquarium Aq = Aquarium();
+    Aq.runAquarium();
+    // delete Aq;
     return 0;
 }

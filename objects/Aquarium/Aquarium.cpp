@@ -30,26 +30,33 @@ Aquarium::~Aquarium(){
         cout << "jumlah guppy " << guppy.getAmount() <<endl;
         for(int i = 0; i < guppy.getAmount(); i++){
             guppy[i]->setName("die");
+            guppy.del(i);
         }
         cout << "jumlah piranha " << piranha.getAmount() <<endl;
         for(int i = 0; i < piranha.getAmount(); i++){
             piranha[i]->setName("die");
+            piranha.del(i);
         }
         cout << "jumlah makanan " << foods.getAmount() << endl; 
         for(int i = 0; i < foods.getAmount(); i++){
             foods[i]->stop();
+            foods.del(i);
         }
         cout << "jumlah koin " << coins.getAmount() << endl;
         for(int i = 0; i < coins.getAmount(); i++){
             coins[i]->stop();
+            coins.del(i);
         }
         snail.stop();
+        cout << "finished stopping snail" << endl;
         for(int i = 0; i < num_fish; i++){
             ikan[i].join();
         }
+        cout << "finished joininig ikan" << endl;
         for(int i = 0; i < num_object; i++){
             object[i].join();
         }
+        cout << "finished joining object" << endl;
     }catch(...){
         for(int i = 0; i < 1000; i++){
             ikan[i].join();
@@ -57,6 +64,11 @@ Aquarium::~Aquarium(){
         for(int i = 0; i < 1000; i++){
             object[i].join();
         }
+    }
+    try{
+        terminate();
+    }catch(...){
+        printf("end\n");
     }
 }
 

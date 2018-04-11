@@ -178,24 +178,8 @@ void LinkedList<T>::add(T val){
 }
 template <class T>
 void LinkedList<T>::remove(T val){
-    Node<T>* prev;
-    Node<T>* current = head;
-    while(current){
-        if(current->getVal() == val){
-            Node<T>* curr = current;
-            if(curr == head){
-                head = curr->getNext();
-            }else{
-                current = current->getNext();
-                prev->setNext(current);
-            }
-            delete curr;
-            amount--;
-        }else{
-            prev = current;
-            current = current->getNext();
-        }
-    }
+    int idx = find(val);
+    del(idx);
 }
 template <class T>
 T LinkedList<T>::get(int i) const{

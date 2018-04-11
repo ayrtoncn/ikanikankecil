@@ -48,14 +48,14 @@ Aquarium::~Aquarium(){
             coins.del(i);
         }
         snail.stop();
-        cout << "finished stopping snail" << endl;
-        for(int i = 0; i < num_fish; i++){
-            ikan[i].join();
-        }
-        cout << "finished joininig ikan" << endl;
-        for(int i = 0; i < num_object; i++){
-            object[i].join();
-        }
+        // cout << "finished stopping snail" << endl;
+        // for(int i = 0; i < num_fish; i++){
+        //     ikan[i].join();
+        // }
+        // cout << "finished joininig ikan" << endl;
+        // for(int i = 0; i < num_object; i++){
+        //     object[i].join();
+        // }
         cout << "finished joining object" << endl;
     }catch(...){
         for(int i = 0; i < 1000; i++){
@@ -103,6 +103,7 @@ void Aquarium::lockAquarium(){
 }
 
 void Aquarium::runAquarium(){
+    menu = true;
 	init();
 	num_fish = -1;
     num_guppy = -1;
@@ -115,107 +116,114 @@ void Aquarium::runAquarium(){
     //insialisasi snail
     object[num_object] = thread(&Snail::executeSnail,&snail);
 	bool running = true;
-	while(running){
+	while(running) {
 		InteractionChecker(this);
         clear_screen();
         // Iini gimana main menunya :((
-        // draw_image("img/mainmenubg.png", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-        draw_image("img/bg1.jpg", SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
-        for(int i = 0; i <= num_guppy ; i++){
-            if(guppy[i]->getName()!="die"){
-                if(guppy[i]->getOrientation() =='l'){
-                    if(guppy[i]->getGrowthLevel()<=3){
-                        if(!guppy[i]->getIsHungry()){
-                            draw_image("img/ikankiri1.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
-                        } else {
-                            draw_image("img/ikankiri1laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
-                        }
-                    }else if(guppy[i]->getGrowthLevel()<=6){
-                        if(!guppy[i]->getIsHungry()){
-                            draw_image("img/ikankiri2.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
-                        }else{
-                            draw_image("img/ikankiri2laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
-                        }
-                    }else{
-                        if(!guppy[i]->getIsHungry()){
-                            draw_image("img/ikankiri3.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
-                        }else{
-                            draw_image("img/ikankiri3laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
-                        }
-                    }
-                    
-                }else{
-                    if(guppy[i]->getGrowthLevel()<=3){
-                        if(!guppy[i]->getIsHungry()){
-                            draw_image("img/ikankanan1.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
-                        }else{
-                            draw_image("img/ikankanan1laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
-                        }
-                    }else if(guppy[i]->getGrowthLevel()<=6){
-                        if(!guppy[i]->getIsHungry()){
-                            draw_image("img/ikankanan2.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
-                        }else{
-                            draw_image("img/ikankanan2laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
-                        }
-                    }else{
-                        if(!guppy[i]->getIsHungry()){
-                            draw_image("img/ikankanan3.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
-                        }else{
-                            draw_image("img/ikankanan3laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
-                        }
-                    }
-                    
-                }
-            }
+        if (menu) {
+            draw_image("img/mainmenubg.png", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+            draw_text("ArkavQuarium v0.01", 75, 270, 20, 0, 0, 0);
+            draw_text("Quit Game", 50, SCREEN_WIDTH - 300, 500, 255, 0, 0);
+            draw_text("New Game", 50, 100, 500, 0, 255, 0);
+            update_screen();
         }
-        for(int i = 0; i <= num_piran ; i++){
-            if(piranha[i]->getName()!="die"){
-                if(piranha[i]->getOrientation() =='l'){
-                    if(!piranha[i]->getIsHungry()){
-                        draw_image("img/piranhakiri.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
+        else {
+            draw_image("img/bg1.jpg", SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
+            for(int i = 0; i <= num_guppy ; i++){
+                if(guppy[i]->getName()!="die"){
+                    if(guppy[i]->getOrientation() =='l'){
+                        if(guppy[i]->getGrowthLevel()<=3){
+                            if(!guppy[i]->getIsHungry()){
+                                draw_image("img/ikankiri1.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                            } else {
+                                draw_image("img/ikankiri1laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                            }
+                        }else if(guppy[i]->getGrowthLevel()<=6){
+                            if(!guppy[i]->getIsHungry()){
+                                draw_image("img/ikankiri2.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                            }else{
+                                draw_image("img/ikankiri2laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                            }
+                        }else{
+                            if(!guppy[i]->getIsHungry()){
+                                draw_image("img/ikankiri3.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                            }else{
+                                draw_image("img/ikankiri3laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                            }
+                        }
+                        
                     }else{
-                        draw_image("img/piranhakirilaper.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
-                    }
-                }else{
-                    if(!piranha[i]->getIsHungry()){
-                        draw_image("img/piranhakanan.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
-                    }else{
-                        draw_image("img/piranhakananlaper.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
+                        if(guppy[i]->getGrowthLevel()<=3){
+                            if(!guppy[i]->getIsHungry()){
+                                draw_image("img/ikankanan1.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                            }else{
+                                draw_image("img/ikankanan1laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                            }
+                        }else if(guppy[i]->getGrowthLevel()<=6){
+                            if(!guppy[i]->getIsHungry()){
+                                draw_image("img/ikankanan2.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                            }else{
+                                draw_image("img/ikankanan2laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                            }
+                        }else{
+                            if(!guppy[i]->getIsHungry()){
+                                draw_image("img/ikankanan3.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                            }else{
+                                draw_image("img/ikankanan3laper.png", guppy[i]->getPosition().getX(), guppy[i]->getPosition().getY());
+                            }
+                        }
+                        
                     }
                 }
             }
-        }
-        for(int i=0;i<=num_food;i++){
-            if(foods[i]->getName()!="die"){
-                draw_image("img/pelet.png",foods[i]->getPosition().getX(),foods[i]->getPosition().getY());
+            for(int i = 0; i <= num_piran ; i++){
+                if(piranha[i]->getName()!="die"){
+                    if(piranha[i]->getOrientation() =='l'){
+                        if(!piranha[i]->getIsHungry()){
+                            draw_image("img/piranhakiri.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
+                        }else{
+                            draw_image("img/piranhakirilaper.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
+                        }
+                    }else{
+                        if(!piranha[i]->getIsHungry()){
+                            draw_image("img/piranhakanan.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
+                        }else{
+                            draw_image("img/piranhakananlaper.png", piranha[i]->getPosition().getX(), piranha[i]->getPosition().getY());
+                        }
+                    }
+                }
             }
-        }
-        for (int i = 0; i <= num_coin; i++)
-        {
-            if (coins[i]->getValue() != 0)
+            for(int i=0;i<=num_food;i++){
+                if(foods[i]->getName()!="die"){
+                    draw_image("img/pelet.png",foods[i]->getPosition().getX(),foods[i]->getPosition().getY());
+                }
+            }
+            for (int i = 0; i <= num_coin; i++)
             {
-                draw_image("img/coin.png", coins[i]->getPosition().getX(), coins[i]->getPosition().getY());
+                if (coins[i]->getValue() != 0)
+                {
+                    draw_image("img/coin.png", coins[i]->getPosition().getX(), coins[i]->getPosition().getY());
+                }
             }
-        }
-        if(snail.getOrientation() =='l'){
-            draw_image("img/snailkiri.png", snail.getPosition().getX(), snail.getPosition().getY());
-        }else{
-            draw_image("img/snailkanan.png", snail.getPosition().getX(), snail.getPosition().getY());
-        }
-          
-        if((input=='x') || (num_eggs == 3) || ((coin-Guppy::GUPPY_PRICE<0) && (num_coin<=-1) && (num_guppy+num_piran <= 0))){
-            running=false;
-            input = '0';
-        }
-        ostringstream strs;
-        strs<<coin;
-        draw_text("Jumlah telur: ", 18, 10, 50, 0, 0, 0);
-        draw_text(std::to_string(num_eggs),18, 140, 50, 0, 0, 0);
-        draw_text("G untuk membeli guppy, P untuk membeli piranha, E untuk membeli telur, x untuk keluar", 18, 10, 10, 0, 0, 0);
-        draw_text(strs.str(), 18, 10, 30, 0, 0, 0);
-        update_screen();
-        
-	}
+            if(snail.getOrientation() =='l'){
+                draw_image("img/snailkiri.png", snail.getPosition().getX(), snail.getPosition().getY());
+            }else{
+                draw_image("img/snailkanan.png", snail.getPosition().getX(), snail.getPosition().getY());
+            }
+            
+            if((input=='x') || (num_eggs == 3) || ((coin-Guppy::GUPPY_PRICE<0) && (num_coin<=-1) && (num_guppy+num_piran <= 0))){
+                running=false;
+                input = '0';
+            }
+            ostringstream strs;
+            strs<<coin;
+            draw_text("Jumlah telur: ", 18, 10, 50, 0, 0, 0);
+            draw_text(std::to_string(num_eggs),18, 140, 50, 0, 0, 0);
+            draw_text("G untuk membeli guppy, P untuk membeli piranha, E untuk membeli telur, x untuk keluar", 18, 10, 10, 0, 0, 0);
+            draw_text(strs.str(), 18, 10, 30, 0, 0, 0);
+            update_screen();
+        }    
+    }
     if (num_eggs == 3){
         bool running = true;
         while(running){
@@ -245,120 +253,120 @@ void Aquarium::runAquarium(){
     }
 }
 
-void Aquarium::save() {
-    int n_guppy = guppy.getAmount();
-    int n_piran = piranha.getAmount();
-    int n_coins = coins.getAmount();
-    int n_foods = foods.getAmount();
+// void Aquarium::save() {
+//     int n_guppy = guppy.getAmount();
+//     int n_piran = piranha.getAmount();
+//     int n_coins = coins.getAmount();
+//     int n_foods = foods.getAmount();
 
-    Guppy arr_guppy[n_guppy];
-    Piranha arr_piran[n_piran];
-    Coin arr_coins[n_coins];
-    Food arr_foods[n_foods];
+//     Guppy arr_guppy[n_guppy];
+//     Piranha arr_piran[n_piran];
+//     Coin arr_coins[n_coins];
+//     Food arr_foods[n_foods];
 
-    for (int i = 0; i < n_guppy; i++) {
-        arr_guppy[i] = *guppy[i];
-    }
-    for (int i = 0; i < n_piran; i++) {
-        arr_piran[i] = *piranha[i];
-    }
-    for (int i = 0; i < n_coins; i++) {
-        arr_coins[i] = *coins[i];
-    }
-    for (int i = 0; i < n_foods; i++) {
-        arr_foods[i] = *foods[i];
-    }
+//     for (int i = 0; i < n_guppy; i++) {
+//         arr_guppy[i] = *guppy[i];
+//     }
+//     for (int i = 0; i < n_piran; i++) {
+//         arr_piran[i] = *piranha[i];
+//     }
+//     for (int i = 0; i < n_coins; i++) {
+//         arr_coins[i] = *coins[i];
+//     }
+//     for (int i = 0; i < n_foods; i++) {
+//         arr_foods[i] = *foods[i];
+//     }
 
-    ofstream save_file;
-    save_file.open("savegame", ios::out | ios::trunc);
+//     ofstream save_file;
+//     save_file.open("savegame", ios::out | ios::trunc);
 
-    // marker for amount of everything
-    save_file.write((char *)&n_guppy, sizeof(n_guppy));
-    save_file.write((char *)&n_piran, sizeof(n_piran));
-    save_file.write((char *)&n_coins, sizeof(n_coins));
-    save_file.write((char *)&n_foods, sizeof(n_foods));
+//     // marker for amount of everything
+//     save_file.write((char *)&n_guppy, sizeof(n_guppy));
+//     save_file.write((char *)&n_piran, sizeof(n_piran));
+//     save_file.write((char *)&n_coins, sizeof(n_coins));
+//     save_file.write((char *)&n_foods, sizeof(n_foods));
     
-    // attributes
-    save_file.write((char *)&num_fish, sizeof(num_fish));
-    save_file.write((char *)&num_guppy, sizeof(num_guppy));
-    save_file.write((char *)&num_piran, sizeof(num_piran));
-    save_file.write((char *)&num_food, sizeof(num_food));
-    save_file.write((char *)&num_eggs, sizeof(num_eggs));
-    save_file.write((char *)&num_coin, sizeof(num_coin));
-    save_file.write((char *)&num_object, sizeof(num_object));
-    save_file.write((char *)&coin, sizeof(coin));
+//     // attributes
+//     save_file.write((char *)&num_fish, sizeof(num_fish));
+//     save_file.write((char *)&num_guppy, sizeof(num_guppy));
+//     save_file.write((char *)&num_piran, sizeof(num_piran));
+//     save_file.write((char *)&num_food, sizeof(num_food));
+//     save_file.write((char *)&num_eggs, sizeof(num_eggs));
+//     save_file.write((char *)&num_coin, sizeof(num_coin));
+//     save_file.write((char *)&num_object, sizeof(num_object));
+//     save_file.write((char *)&coin, sizeof(coin));
 
-    for (int i = 0; i < n_guppy; i++) {
-        save_file.write((char *)&arr_guppy[i], sizeof(arr_guppy[i]));
-    }
+//     for (int i = 0; i < n_guppy; i++) {
+//         save_file.write((char *)&arr_guppy[i], sizeof(arr_guppy[i]));
+//     }
 
-    for (int i = 0; i < n_piran; i++) {
-        save_file.write((char *)&arr_piran[i], sizeof(arr_piran[i]));
-    }
+//     for (int i = 0; i < n_piran; i++) {
+//         save_file.write((char *)&arr_piran[i], sizeof(arr_piran[i]));
+//     }
 
-    for (int i = 0; i < n_coins; i++) {
-        save_file.write((char *)&arr_coins[i], sizeof(arr_coins[i]));
-    }
+//     for (int i = 0; i < n_coins; i++) {
+//         save_file.write((char *)&arr_coins[i], sizeof(arr_coins[i]));
+//     }
 
-    for (int i = 0; i < n_foods; i++) {
-        save_file.write((char *)&arr_foods[i], sizeof(arr_foods[i]));
-    }
+//     for (int i = 0; i < n_foods; i++) {
+//         save_file.write((char *)&arr_foods[i], sizeof(arr_foods[i]));
+//     }
 
-    save_file.write((char *)&snail, sizeof(snail));
+//     save_file.write((char *)&snail, sizeof(snail));
 
-    save_file.close();
-}
+//     save_file.close();
+// }
 
-void Aquarium::load() {
-    ifstream load_file;
-    load_file.open("savegame", fstream::in);
+// void Aquarium::load() {
+//     ifstream load_file;
+//     load_file.open("savegame", fstream::in);
 
-    // loading markers
-    int n_guppy;
-    int n_piran;
-    int n_coins;
-    int n_foods;
+//     // loading markers
+//     int n_guppy;
+//     int n_piran;
+//     int n_coins;
+//     int n_foods;
 
-    load_file.read((char *)&n_guppy, sizeof(n_guppy));
-    load_file.read((char *)&n_piran, sizeof(n_piran));
-    load_file.read((char *)&n_coins, sizeof(n_coins));
-    load_file.read((char *)&n_foods, sizeof(n_foods));
+//     load_file.read((char *)&n_guppy, sizeof(n_guppy));
+//     load_file.read((char *)&n_piran, sizeof(n_piran));
+//     load_file.read((char *)&n_coins, sizeof(n_coins));
+//     load_file.read((char *)&n_foods, sizeof(n_foods));
 
-    // attributes
-    load_file.read((char *)&num_fish, sizeof(num_fish));
-    load_file.read((char *)&num_guppy, sizeof(num_guppy));
-    load_file.read((char *)&num_piran, sizeof(num_piran));
-    load_file.read((char *)&num_food, sizeof(num_food));
-    load_file.read((char *)&num_eggs, sizeof(num_eggs));
-    load_file.read((char *)&num_coin, sizeof(num_coin));
-    load_file.read((char *)&num_object, sizeof(num_object));
-    load_file.read((char *)&coin, sizeof(coin));
+//     // attributes
+//     load_file.read((char *)&num_fish, sizeof(num_fish));
+//     load_file.read((char *)&num_guppy, sizeof(num_guppy));
+//     load_file.read((char *)&num_piran, sizeof(num_piran));
+//     load_file.read((char *)&num_food, sizeof(num_food));
+//     load_file.read((char *)&num_eggs, sizeof(num_eggs));
+//     load_file.read((char *)&num_coin, sizeof(num_coin));
+//     load_file.read((char *)&num_object, sizeof(num_object));
+//     load_file.read((char *)&coin, sizeof(coin));
 
-    for (int i = 0; i < n_guppy; i++) {
-        Guppy new_guppy;
-        load_file.read((char *)&new_guppy, sizeof(new_guppy));
-        guppy.add(new Guppy(new_guppy));
-    }
+//     for (int i = 0; i < n_guppy; i++) {
+//         Guppy new_guppy;
+//         load_file.read((char *)&new_guppy, sizeof(new_guppy));
+//         guppy.add(new Guppy(new_guppy));
+//     }
 
-    for (int i = 0; i < n_piran; i++) {
-        Piranha new_piran;
-        load_file.read((char *)&new_piran, sizeof(new_piran));
-        piranha.add(new Piranha(new_piran));
-    }
+//     for (int i = 0; i < n_piran; i++) {
+//         Piranha new_piran;
+//         load_file.read((char *)&new_piran, sizeof(new_piran));
+//         piranha.add(new Piranha(new_piran));
+//     }
 
-    for (int i = 0; i < n_coins; i++) {
-        Coin new_coin;
-        load_file.read((char *)&new_coin, sizeof(new_coin));
-        coins.add(new Coin(new_coin));
-    }
+//     for (int i = 0; i < n_coins; i++) {
+//         Coin new_coin;
+//         load_file.read((char *)&new_coin, sizeof(new_coin));
+//         coins.add(new Coin(new_coin));
+//     }
 
-    for (int i = 0; i < n_foods; i++) {
-        Food new_food;
-        load_file.read((char *)&new_food, sizeof(new_food));
-        foods.add(new Food(new_food));
-    }
+//     for (int i = 0; i < n_foods; i++) {
+//         Food new_food;
+//         load_file.read((char *)&new_food, sizeof(new_food));
+//         foods.add(new Food(new_food));
+//     }
 
-    load_file.read((char *)&snail, sizeof(snail));
+//     load_file.read((char *)&snail, sizeof(snail));
 
-    load_file.close();
-}
+//     load_file.close();
+// }

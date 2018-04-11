@@ -41,19 +41,8 @@ public:
     // DEWA AQUARIUM 
     void runAquarium();
 
-    // LOAD SAVE
-    void save();
-    void load();
-
     // METHODS
     friend void InteractionChecker(Aquarium* Aq);
-    friend void AddFishFromFish(Aquarium& Aq, const Fish& _fish);
-    friend void AddCoinFromCoins(Aquarium& Aq, const Coin &coin);
-    friend void AddFoodfromFoods(Aquarium& Aq, const Food &food);
-
-    friend void DeleteFishFromFish(Aquarium& Aq, const Fish &_fish);
-    friend void DeleteCoinFromCoins(Aquarium& Aq, const Coin &coin);
-    friend void DeleteFoodfromFoods(Aquarium& Aq, const Food &food);
 
   private:
     int width;
@@ -75,6 +64,8 @@ public:
     thread ikan[1000];
     thread object[1000];
     Snail snail;
+
+    bool menu;
 };
 
 #endif

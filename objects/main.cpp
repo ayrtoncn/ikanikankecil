@@ -46,14 +46,7 @@ void InteractionChecker(Aquarium* Aq){
             Aq->input = 's';
             break;
         case SDL_BUTTON_LEFT:
-            // cout<<num_food<<endl;
             Aq->input = 'c';
-            //percobaan gerakin siput ke arah mouse click
-            int x,y;
-            SDL_GetMouseState(&x,&y);
-            Point temp;
-            temp.setX(x);
-            temp.setY(y);
             break;
         }
     }
@@ -86,37 +79,48 @@ void InteractionChecker(Aquarium* Aq){
         int x,y;
         SDL_GetMouseState(&x,&y);
         bool coin_take=false;
-        //interaksi mouse dengan coin
-        for (int i = 0; i <= Aq->num_coin; i++) {
-            if (Aq->coins[i]->getPosition().getX() <= x + 20 
-            && Aq->coins[i]->getPosition().getX() >= x- 20 
-            && Aq->coins[i]->getPosition().getY() >= y - 20
-            && Aq->coins[i]->getPosition().getY() <= y + 20)
-            {
-                coin_take = true;
-                Aq->coin += Aq->coins[i]->getValue();
-                Aq->coins[i]->stop();
-                Aq->coins.del(i);
-                Aq->num_coin--;
-                break;
+        Aq->input = '0';
+        if (Aq->menu) {
+            if (x <= SCREEN_WIDTH/2) {
+                Aq->menu = false;
+            }
+            else {
+                exit(0);
             }
         }
-
-        if(!coin_take && Aq->coin -5 >=0) {
-            // /cout<<"AAA"<<endl;
-            Aq->coin -=5;
-            Aq->num_food++;
-            Aq->num_object++;
-            Aq->foods.add(new Food(x));
-            Aq->object[Aq->num_object] = thread(&Food::executeFood,Aq->foods[Aq->num_food]); 
-            Point temp;
-            temp.setX(x);
-            temp.setY(y);
-            Aq->input = '0';
-        }
         else {
-            Aq->input = '0';
-        }      
+            //interaksi mouse dengan coin
+            for (int i = 0; i <= Aq->num_coin; i++) {
+                if (Aq->coins[i]->getPosition().getX() <= x + 20 
+                && Aq->coins[i]->getPosition().getX() >= x- 20 
+                && Aq->coins[i]->getPosition().getY() >= y - 20
+                && Aq->coins[i]->getPosition().getY() <= y + 20)
+                {
+                    coin_take = true;
+                    Aq->coin += Aq->coins[i]->getValue();
+                    Aq->coins[i]->stop();
+                    Aq->coins.del(i);
+                    Aq->num_coin--;
+                    break;
+                }
+            }
+
+            if(!coin_take && Aq->coin -5 >=0) {
+                // /cout<<"AAA"<<endl;
+                Aq->coin -=5;
+                Aq->num_food++;
+                Aq->num_object++;
+                Aq->foods.add(new Food(x));
+                Aq->object[Aq->num_object] = thread(&Food::executeFood,Aq->foods[Aq->num_food]); 
+                Point temp;
+                temp.setX(x);
+                temp.setY(y);
+                Aq->input = '0';
+            }
+            else {
+                Aq->input = '0';
+            }
+        }  
     }
     else if(Aq->input =='e' && Aq->coin - eggPrice >=0){
         Aq->coin -= eggPrice;
@@ -124,7 +128,8 @@ void InteractionChecker(Aquarium* Aq){
         Aq->input = '0';
     }
     else if (Aq->input == 's') {
-        Aq->save();
+        // Aq->save();
+        Aq->input = '0';
     }
 
     
@@ -304,17 +309,23 @@ void InteractionChecker(Aquarium* Aq){
         }
     }
     
-
+    for(int i = 0; i <= Aq->num_guppy; i++){
+        if(Aq->guppy[i]->getName() == "die"){
+            Aq->guppy.del(i);
+            Aq->num_guppy--;
+        }
+    }
+    for (int i = 0; i <= Aq->num_piran; i++)
+    {
+        if (Aq->piranha[i]->getName() == "die")
+        {
+            Aq->piranha.del(i);
+            Aq->num_piran--;
+        }
+    }
     Aq->unlockAquarium();
 }
 
-void AddFishFromFish(Aquarium& Aq, const Fish& _fish);
-void AddCoinFromCoins(Aquarium& Aq, const Coin &coin);
-void AddFoodfromFoods(Aquarium& Aq, const Food &food);
-
-void DeleteFishFromFish(Aquarium& Aq, const Fish &_fish);
-void DeleteCoinFromCoins(Aquarium& Aq, const Coin &coin);
-void DeleteFoodfromFoods(Aquarium& Aq, const Food &food);
 
 
 int main(){

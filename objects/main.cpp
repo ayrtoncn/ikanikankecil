@@ -26,6 +26,7 @@ void InteractionChecker(Aquarium* Aq){
             break;
         case SDLK_x:
             Aq->input ='x';
+            Aq->unlockAquarium();
             break;
         case SDLK_p:
             Aq->input ='p';
@@ -86,7 +87,7 @@ void InteractionChecker(Aquarium* Aq){
             {
                 coin_take = true;
                 Aq->coin += Aq->coins[i]->getValue();
-                Aq->coins[i]->~Coin();
+                Aq->coins[i]->stop();
                 Aq->coins.del(i);
                 Aq->num_coin--;
                 break;
@@ -201,6 +202,7 @@ void InteractionChecker(Aquarium* Aq){
                 && Aq->foods[i]->getPosition().getY() <= Aq->guppy[gup]->getPosition().getY()+50 
                 && Aq->foods[i]->getPosition().getY() >= Aq->guppy[gup]->getPosition().getY()-50){
                     Aq->guppy[gup]->Eat();
+                    Aq->foods[i]->stop();
                     Aq->foods.del(i);
                     Aq->num_food = Aq->num_food - 1;
                 }
@@ -212,6 +214,7 @@ void InteractionChecker(Aquarium* Aq){
         for(int i = 0; i <= Aq->num_food; i++){
             if(Aq->foods[i]->getPosition().getY() >= SCREEN_HEIGHT-30){
                 //cout<<"MATIIIIIIIIIIIIIIIIIIIIII"<<endl;
+                Aq->foods[i]->stop();
                 Aq->foods.del(i);
                 Aq->num_food = Aq->num_food - 1;
             }
@@ -307,7 +310,8 @@ void DeleteFoodfromFoods(Aquarium& Aq, const Food &food);
 
 
 int main(){
-    Aquarium Aq = Aquarium();
-    Aq.runAquarium();
+    Aquarium *Aq = new Aquarium();
+    Aq->runAquarium();
+    delete Aq;
     return 0;
 }

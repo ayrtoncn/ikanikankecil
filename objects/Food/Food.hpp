@@ -38,8 +38,10 @@ public:
     // METHODS
      //COntroller
      void executeFood();
+     void stop();
 
 private:
+    bool running;
     string name;
     int movement_speed;
     Point position;

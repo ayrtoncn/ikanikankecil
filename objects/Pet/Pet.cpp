@@ -90,11 +90,15 @@ void Snail::takeCoin(Coin& coin) {
     //coin.~Coin();
 }
 
+void Snail::stop(){
+    running = false;
+}
+
 void Snail::executeSnail(){
     Snail_prevtime = time_since_start();
     Point temp;
     tujuan = temp;
-    bool running =true;
+    running = true;
     while(running){
         usleep(100);
         Snail_now = time_since_start();

@@ -41,8 +41,10 @@ public:
 
 //CONTROLER
     void executeSnail();
+    void stop();
 private:
     //int radius;
+    bool running;
     int orientation;
     int movement_speed;
     Point position;

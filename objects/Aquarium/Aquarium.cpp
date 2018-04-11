@@ -26,7 +26,33 @@ Aquarium::Aquarium(){
 }
 
 Aquarium::~Aquarium(){
-	
+    try{
+        cout << "jumlah guppy " << guppy.getAmount() <<endl;
+        for(int i = 0; i < guppy.getAmount(); i++){
+            guppy[i]->setName("die");
+        }
+        cout << "jumlah piranha " << piranha.getAmount() <<endl;
+        for(int i = 0; i < piranha.getAmount(); i++){
+            piranha[i]->setName("die");
+        }
+        cout << "jumlah makanan " << foods.getAmount() << endl; 
+        for(int i = 0; i < foods.getAmount(); i++){
+            foods[i]->stop();
+        }
+        cout << "jumlah koin " << coins.getAmount() << endl;
+        for(int i = 0; i < coins.getAmount(); i++){
+            coins[i]->stop();
+        }
+        snail.stop();
+        for(int i = 0; i < 1000; i++){
+            ikan[i].join();
+        }
+        for(int i = 0; i < 1000; i++){
+            object[i].join();
+        }
+    }catch(...){
+        printf("masuk\n");
+    }
 }
 
 Aquarium::Aquarium(int _width, int _height){
@@ -48,6 +74,7 @@ Aquarium& Aquarium::operator=(const Aquarium& aq){
     snail = Snail();
     height = SCREEN_HEIGHT;
     width = SCREEN_WIDTH;
+    return *this;
 }
 
 void Aquarium::unlockAquarium(){

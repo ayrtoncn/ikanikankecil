@@ -37,8 +37,10 @@ public:
 
     // METHODS
     void executeCoin();
+    void stop();
 
 private:
+    bool running;
     int value;
     int movement_speed;
     Point position;

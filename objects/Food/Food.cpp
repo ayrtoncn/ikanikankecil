@@ -76,9 +76,13 @@ void Food::setPosition(Point _position) {
 //     radius = _radius;
 // }
 
+void Food::stop(){
+    running = false;
+}
+
 void Food::executeFood(){
     Food_prevtime = time_since_start();
-    bool running =true;
+    running =true;
     while(running){
         usleep(100);
         Food_now = time_since_start();

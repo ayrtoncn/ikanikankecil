@@ -76,9 +76,13 @@ void Coin::setRadius(int _radius) {
     radius = _radius;
 }
 
+void Coin::stop(){
+    running = false;
+}
+
 void Coin::executeCoin() {
     Coin_prevtime = time_since_start();
-    bool running = true;
+    running = true;
     while (running)
     {
         usleep(100);

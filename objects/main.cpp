@@ -11,7 +11,9 @@
 #include "Piranha/Piranha.hpp"
 #include "Food/Food.hpp"
 #include "Aquarium/Aquarium.hpp"
-using namespace std;    
+using namespace std;
+
+// Iini gimana main menunya :((
 
 void InteractionChecker(Aquarium* Aq){
     Aq->lockAquarium();
@@ -23,6 +25,12 @@ void InteractionChecker(Aquarium* Aq){
         // x untuk keluar
         case SDLK_g:
             Aq->input = 'g';
+            break;
+        case SDLK_n:
+            Aq->input = 'n';
+            break;
+        case SDLK_l:
+            Aq->input = 'l';
             break;
         case SDLK_x:
             Aq->input ='x';

@@ -70,7 +70,7 @@ template <class T>
 class LinkedList{
 public:
     LinkedList();
-    LinkedList(Node<T>);
+    LinkedList(Node<T>*);
     ~LinkedList();
     LinkedList(const LinkedList&);
     LinkedList& operator=(const LinkedList&);
@@ -102,8 +102,8 @@ int LinkedList<T>::getAmount() const{
 }
 
 template <class T>
-LinkedList<T>::LinkedList(Node<T> N){
-    head = &N;
+LinkedList<T>::LinkedList(Node<T> *N){
+    head = N;
     amount = 1;
 }
 
@@ -124,20 +124,24 @@ LinkedList<T>::~LinkedList(){
 template <class T>
 LinkedList<T>::LinkedList(const LinkedList<T>& L){
     amount = L.amount;
-    head = new Node<T>(L.getVal());
-    Node<T> current = head;
-    for(int i = 1; i < amount; i++){
-        current.next = new Node<T>(L[i].next->getVal());
-        current = current.next;
+    if(amount > 0){
+        head = new Node<T>(L.getNode(0)->getVal());
+        Node<T>* current = head;
+        for(int i = 1; i < amount; i++){
+            current->setNext(new Node<T>(L[i]));
+            current = current->getNext();
+        }
+        current->setNext(NULL);
     }
-    current.next = NULL;
 }
 
 template <class T>
 LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& L){
-    if(!L.head){
-        return *this;
-    }    
+    this->amount = L.amount;
+    for(int i = 0; i < this->amount; i++){
+    	this->add(L[i]);
+    }
+    return *this;    
 }
 
 template <class T>
